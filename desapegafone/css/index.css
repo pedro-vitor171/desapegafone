@@ -1,8 +1,7 @@
 * {
     margin: 0%;
     padding: 0;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+    color: #F9F6F5;
 }
 
 body {
@@ -11,15 +10,18 @@ body {
 }
 
 .subnav h1 {
-    font-size: 35px;
+    font-size: 38px;
+    opacity: 1;
 }
-
+.subnav li:hover{
+    opacity: .9;
+}
 .subnav {
     display: flex;
     justify-content: space-around;
     align-items: center;
     background-color: #54B4A6;
-    height: 90px;
+    height: 100px;
 }
 
 a,
@@ -27,7 +29,7 @@ li,
 h1 {
     all: inherit;
     cursor: pointer;
-    font-size: 25px;
+    font-size: 30px;
 }
 
 main {
@@ -38,7 +40,6 @@ main {
 footer {
     height: 225px;
     background-color: #54B4A6;
-    color: #F9F6F5;
     display: flex;
     justify-content: space-around;
     align-items: center;
