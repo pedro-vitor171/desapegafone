@@ -27,7 +27,6 @@ body {
 }
 
 a,
-li,
 h1 {
     all: inherit;
     cursor: pointer;
@@ -35,7 +34,7 @@ h1 {
 }
 
 main {
-    height: 1000px;
+    height: 820px;
     background: #F9F6F5;
     display: flex;
     flex-direction: column;
@@ -77,6 +76,7 @@ footer .names {
     background-color: #ffffff;
     border-radius: 10%;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transition: ease 0.5s;
 }
 
 .subMain .cad img {
@@ -93,13 +93,46 @@ footer .names {
 }
 
 .initMain {
-    background: url("https://www.oficinadanet.com.br/media/post/53307/1400/cpaa-redmi-note-13.png"); ;
+    background: url("https://www.oficinadanet.com.br/media/post/53307/1400/cpaa-redmi-note-13.png");
     height: 720px;
     display: flex;
     justify-content: start;
     align-items: center;
     padding-left: 55px;
     gap: 1350px;
+}
+
+.cad:hover {
+    transform: scale(1.1);
+    transition: 0.5s;
+}
+
+.main-two {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+}
+
+.main-two h1 {
+    font-size: 45px;
+    font-weight: bold;
+    color: #000000;
+}
+
+h1 a {
+    font-size: 38px
+}
+
+input {
+    all: inherit;
+    width: 550px;
+    height: 65px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 25px;
+    background-color: #F9F6F5;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
