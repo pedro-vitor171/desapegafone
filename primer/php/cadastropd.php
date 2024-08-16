@@ -1,3 +1,9 @@
+<?php
+    require_once '../cruds/conexao.php';
+    $sql = "SELECT id_marca, nome FROM marca";
+    $stmt = $pdo->query($sql);
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -14,13 +20,25 @@
             padding: 10px 0px;
             width: 800px;
         }
+            select{
+                all: inherit;
+                width: 550px;
+                height: 65px;
+                border-radius: 10px;
+                padding: 1px 20px;
+                font-size: 25px;
+                background-color: none;
+                color: #F9F6F5;
+                margin-top: -2dvh;
+                margin-bottom: -4dvh;
+            }
     </style>
     <title>Cadastro</title>
 </head>
 <body>
 
     <div class="subnav">
-                <a href="">Suporte</a>
+                <a href="../sessao/sessao.php">Conta</a>
                 <a href="">Sobre</a>
                 <div class="log">
                     <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
@@ -36,7 +54,11 @@
                 <label for="nome"></label>
                 <input type="text" name="nome" id="nome" placeholder="Nome" required>
                 <label for="marca"></label>
-                <input type="text" name="marca" id="marca" placeholder="marca" required>
+                <select name="marca" id="marca">
+                    <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<option value='{$row['id_marca']}'>+ {$row['nome']}</option>";
+                }?>
+                </select>                
                 <label for="geracao"></label>
                 <input type="text" name="geracao" id="geracao" placeholder="geracao"  required>
                 <label for="valor"></label>
@@ -56,14 +78,14 @@
         </div>
         <div class="names">
             <h2>Contatos:</h2>
-            <p>Numero de telefone:</p>
-            <p>E-mail:</p>
+            <p>Numero de telefone: 77 95590-3454</p>
+            <p>E-mail: sentarebolando@gmail.com</p>
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>
-            <p>Github:</p>
-            <p>Instagram:</p>
-            <p>Twitter:</p>
+            <p>- Github</p>
+            <p>- Instagram</p>
+            <p>- Twitter</p>
         </div>
         </div>
     </footer>

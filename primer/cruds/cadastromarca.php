@@ -9,5 +9,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindParam(':nome', $nome);
     $stmt->execute();
     echo "<script>alert('cadastro de marca feito com sucesso!')</script>";
-    echo "<script>window.location.href = '../index.html'</script>";
+    echo "<script>window.location.href = '../dados/marcas.php'</script>";
 }

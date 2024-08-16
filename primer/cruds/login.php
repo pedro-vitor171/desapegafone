@@ -3,16 +3,15 @@ require_once 'conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $senha = $_POST['senha'];
 
-    $sql = "SELECT * FROM usuários WHERE email = :email AND password = :password";
+    $sql = "SELECT * FROM usuarios WHERE email = :email";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password', $password);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user) {
+    if ($user && password_verify($senha, $user['senha'])) {
         session_start();
         $_SESSION['email'] = $user['email'];
         echo "<script>alert('Login realizado com sucesso.')</script>";

@@ -1,3 +1,8 @@
+<?php
+    require_once '../cruds/conexao.php';
+    $sql = "SELECT id_celular, nome FROM celulares";
+    $stmt = $pdo->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -11,11 +16,23 @@
             display: grid;
             place-items: center;
             width: 1000px;
-            padding: 30px 0px;
-            width: 700px;
+            padding: 10px 0px;
+            width: 800px;
         }
+        select{
+                all: inherit;
+                width: 550px;
+                height: 65px;
+                border-radius: 10px;
+                padding: 1px 20px;
+                font-size: 25px;
+                background-color: none;
+                color: #F9F6F5;
+                margin-top: -.8dvh;
+                margin-bottom: -6.5dvh;
+            }
     </style>
-    <title>Login</title>
+    <title>Cadastro venda</title>
 </head>
 <body>
 
@@ -31,12 +48,20 @@
 
         <main>       
             <div class="for">     
-            <form action="../cruds/login.php" method="POST">
-                <h1>Login usuario</h1>
-                <label for="email"></label>
-                <input type="text" name="email" id="email" placeholder="Email"  required>
-                <label for="senha"></label>
-                <input type="password" name="senha" id="senha" placeholder="Senha" required>
+            <form action="../cruds/cadastrovenda.php" method="post">
+                <h1>Cadastro venda</h1>
+                <label for="produto"></label>
+                <select name="produto" id="produto">
+                    <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<option value='{$row['id_celular']}'>+ {$row['nome']}</option>";
+                }?>
+                </select>                
+                <label for="comprador"></label>
+                <input type="text" name="comprador" id="comprador" placeholder="Comprador" required>
+                <label for="data"></label>
+                <input type="date" name="data" id="data" placeholder="Data"  required>
+                <label for="valor"></label>
+                <input type="number" name="valor" id="valor" placeholder="Valor" required>
                 <label for="submit"></label>
                 <input class="btn" type="submit" value="Entrar" id="sub" name="submit"/>
             </form>

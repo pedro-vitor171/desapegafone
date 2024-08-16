@@ -48,7 +48,7 @@ $login = $_SESSION['email'];
             margin-bottom: -6dvh;
         }
 
-        main a: {
+        main a {
             background: none;
         }
 
@@ -89,7 +89,7 @@ $login = $_SESSION['email'];
 
 
     <div class="subnav">
-        <a href="">Suporte</a>
+        <a href="sessao.php">Conta</a>
         <a href="">Sobre</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
@@ -101,9 +101,9 @@ $login = $_SESSION['email'];
     <main>
         <h1>Seja Bem vindo <?php echo $login; ?></h1>
         <div class="btns">
-            <a href="../php/cadastropd.html">Cadastrar Produto</a>
+            <a href="../php/cadastropd.php">Cadastrar Produto</a>
             <a href="../php/cadastromarca.html">Cadastrar Marca</a>
-            <a href="../php/cadastrovd.html">Realizar Venda</a>
+            <a href="../php/cadastrovd.php">Realizar Venda</a>
             <a href="../dados/marcas.php" id="dados">Marcas</a>
             <a href="../dados/produtos.php" id="dados">Produtos</a>
             <a href="../dados/vendas.php" id="dados">Vendas</a>
@@ -126,9 +126,9 @@ $login = $_SESSION['email'];
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>
-            <p>Github:</p>
-            <p>Instagram:</p>
-            <p>Twitter:</p>
+            <p>- Github</p>
+            <p>- Instagram</p>
+            <p>- Twitter</p>
         </div>
         </div>
     </footer>

@@ -1,7 +1,7 @@
 <?php
  $host = 'localhost';
  $user = 'root';
- $password = '';
+ $password = '$Resident2x';
  $dbname = 'primer';
 
  try{

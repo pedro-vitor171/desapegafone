@@ -2,30 +2,23 @@
 require_once 'conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $nome = $_POST['nome'];
     $geracao = $_POST['geracao'];
-    $marca = $_POST['marca'];
-    $valor = $_POST['valor'];
+    $marca_id = $_POST['marca'];
+    $valor = floatval($_POST['valor']); // Garantindo que o valor seja um float
 
-    $sql_verificar_marca = "SELECT * FROM marca WHERE nome = :marca";
-    $stmt_verificar = $pdo->prepare($sql_verificar_marca);
-    $stmt_verificar->bindParam(':marca', $marca);
-    $stmt_verificar->execute();
+    $sql = "INSERT INTO celulares (nome, marca_id, geracao, valor) VALUES (:nome, :marca_id, :geracao, :valor)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':nome', $nome);
+    $stmt->bindParam(':marca_id', $marca_id, PDO::PARAM_INT);
+    $stmt->bindParam(':geracao', $geracao, PDO::PARAM_INT);
+    $stmt->bindParam(':valor', $valor, PDO::PARAM_STR); // Ajustado para PDO::PARAM_STR para maior compatibilidade
 
-    if ($stmt_verificar->rowCount() > 0) {
-         $sql = "INSERT INTO celulares (nome, marca, geração, valor) VALUES (:nome, :marca, :geracao, :valor)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':geracao', $geracao);
-        $stmt->bindParam(':marca', $marca);
-        $stmt->bindParam(':valor', $valor);
+    try {
         $stmt->execute();
-
         echo "<script>alert('Celular cadastrado com sucesso!');</script>";
-        echo "<script>window.location.href = '../index.html'</script>";
-    } else {
-        echo "<script>alert('A marca informada não existe. Por favor, cadastre a marca primeiro.');</script>";
-        echo "<script>window.location.href = '../index.html'</script>";
+        echo "<script>window.location.href = '../dados/produtos.php'</script>";
+    } catch (PDOException $e) {
+        echo "Erro ao inserir o celular: " . $e->getMessage();
     }
 }
