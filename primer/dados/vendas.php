@@ -35,8 +35,8 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="php/cadastrouser.html">Cadastro</a>
-        <a href="php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.html">Cadastro</a>
+        <a href="../php/loginuser.html">Login</a>
     </div>
 
     <main>

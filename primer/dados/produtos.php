@@ -35,8 +35,8 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="php/cadastrouser.html">Cadastro</a>
-        <a href="php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.html">Cadastro</a>
+        <a href="../php/loginuser.html">Login</a>
     </div>
 
     <main>
@@ -55,7 +55,6 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $row['nome']; ?></td>
                     <td>
                         <?php
-                            // Consulta para obter o nome da marca
                             $sql_marca = "SELECT nome FROM marca WHERE id_marca = :marca_id";
                             $stmt_marca = $pdo->prepare($sql_marca);
                             $stmt_marca->bindParam(':marca_id', $row['marca_id']);

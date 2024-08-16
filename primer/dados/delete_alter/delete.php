@@ -13,27 +13,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($area === 'marcas') {
         try {
             $pdo->beginTransaction();
-
+    
             // Verificar se existem celulares associados à marca
             $stmt = $pdo->prepare("SELECT COUNT(*) FROM celulares WHERE marca_id = :id_marca");
             $stmt->bindParam(':id_marca', $id);
             $stmt->execute();
             $count = $stmt->fetchColumn();
-
+    
             if ($count > 0) {
-                throw new Exception("Existem celulares associados à marca. Não é possível deletar.");
+                echo '<script>alert("Existem celulares associados a esta marca. Não é possível deletar.");</script>';
+                header('location: ../' . $area . '.php');
+                exit(); // Não precisa mais redirecionar aqui, a mensagem já foi exibida
             }
-
+    
             // Deletar a marca
             $stmt = $pdo->prepare("DELETE FROM marca WHERE id_marca = :id_marca");
             $stmt->bindParam(':id_marca', $id);
             $stmt->execute();
-
+    
             $pdo->commit();
-        } catch (PDOException | Exception $e) {
+            echo '<script>alert("Marca excluída com sucesso!");</script>';
+            header('location: ../' . $area . '.php');
+        } catch (PDOException $e) {
             $pdo->rollBack();
             echo 'Erro ao deletar marca: ' . $e->getMessage();
-            exit();
+            // Adicionar um log ou notificação para o administrador aqui, se necessário
+        } catch (Exception $e) {
+            $pdo->rollBack();
+            echo 'Erro inesperado: ' . $e->getMessage();
+            // Adicionar um log ou notificação para o administrador aqui, se necessário
         }
     } elseif ($area === 'produtos') {
         // Verificar se existem vendas associadas ao produto
@@ -44,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
         if ($count > 0) {
             echo '<script>alert("Existem vendas associadas ao produto. Não é possível deletar.")</script>';
+            header('location: ../' . $area . '.php');
             exit();
         }
     
@@ -53,25 +62,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':id', $id);
         $stmt->execute();
     }
-    } elseif ($area === 'vendas') {
+    }elseif ($area === 'vendas') {
         $sql = "DELETE FROM venda WHERE id_venda = :id";
-    } else {
-        echo '<script>alert("Erro ao deletar registro.")</script>';
-        exit();
-    }
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     
-    if (empty($sql)) {
-        echo 'Consulta SQL inválida.';
-        exit();
-    }
+        try {
+            $pdo->beginTransaction();
+            $stmt->execute();
+            $affectedRows = $stmt->rowCount(); // Verifica se alguma linha foi afetada
     
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-    try {
-        $stmt->execute();
-        header('Location: ../' . $area . '.php');
-        exit();
-    } catch (PDOException $e) {
-        echo 'Erro ao deletar registro: ' . $e->getMessage();
+            if ($affectedRows > 0) {
+                $pdo->commit();
+                echo '<script>alert("Registro excluído com sucesso!");</script>';
+                header('Location: ../' . $area . '.php');
+            } else {
+                echo '<script>alert("Não foi encontrado nenhum registro para excluir.");</script>';
+            }
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            echo 'Erro ao deletar registro: ' . $e->getMessage();
+            // Adicionar log ou notificação para o administrador aqui
+        }
     }
