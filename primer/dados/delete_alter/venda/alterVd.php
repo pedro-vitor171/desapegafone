@@ -1,5 +1,8 @@
 <?php
-require_once '../cruds/conexao.php';
+require_once '../../../cruds/conexao.php';
+
+// Receber o ID da marca via POST
+$id = $_POST['id'];
 
 $sql = "SELECT id_celular, nome, valor FROM celulares";
 $stmt = $pdo->query($sql);
@@ -8,15 +11,26 @@ $celulares = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $celulares[$row['id_celular']] = $row;
 }
-?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
+
+if (isset($id)) {
+    // Carregar os dados da marca para pré-preenchimento do formulário
+    $sql_venda = "SELECT * FROM venda WHERE id_venda = :id_venda";
+    $stmt_venda = $pdo->prepare($sql_venda);
+    $stmt_venda->bindParam(':id_venda', $id);
+    $stmt_venda->execute();
+    $venda = $stmt_venda->fetch(PDO::FETCH_ASSOC);
+
+    if ($venda) {
+        // Exibir formulário de alteração com os dados pré-preenchidos
+        ?>
+        <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/index.css" />
-    <link rel="stylesheet" href="../css/login_cadastro.css">
-    <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../../../css/index.css" />
+    <link rel="stylesheet" href="../../../css/login_cadastro.css">
+    <link rel="shortcut icon" href="../../../css/imgs/arch.svg" type="image/x-icon">
     <style>
         form{
             display: grid;
@@ -44,28 +58,28 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         padding: 5px;
             }
     </style>
-    <title>Cadastro venda</title>
-</head>
-<body>
-
+    <title>Modificar</title>
+    </head>
+    <body>
     <div class="subnav">
-                <a href="../sessao/sessao.php">Conta</a>
-                <a href="../sessao/user.php">Inicio</a>
+                <a href="../../../sessao/sessao.php">Conta</a>
+                <a href="../../../sessao/user.php">Inicio</a>
                 <div class="log">
-                    <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
+                    <h1><b><a href="../../../index.html">PrimerPhone</a></b></h1>
                 </div>
-                <a href="cadastrouser.html">Cadastro</a>
-                <a href="loginuser.html">Login</a>            
+                <a href="../../../php/cadastrouser.html">Cadastro</a>
+                <a href="../../../php/loginuser.html">Login</a>            
         </div>
 
         <main>
     <div class="for">
-        <form action="../cruds/cadastrovenda.php" method="post">
-            <h1>Cadastro venda</h1>
+        <form action="authVd.php" method="post">
+            <h1>Modificar Venda</h1>
+            <input type="hidden" name="id" value="<?= $venda['id_venda']; ?>">
             <label for="produto"></label>
-            <select name="produto" id="produto"  onchange="atualizarValor()">
-                <?php foreach ($celulares as $id_celular => $celular) { ?>
-                    <option value="<?php echo $id_celular; ?>"><?php echo '+ '.$celular['nome']; ?></option>
+            <select name="produto" id="produto" onchange="atualizarValor()">
+                <?php foreach ($celulares as $celular) { ?>
+                    <option value="<?php echo $celular['id_celular']; ?>" <?php if ($venda['celular_id'] == $celular['id_celular']) echo 'selected'; ?>><?php echo '+ '.$celular['nome']; ?></option>
                 <?php } ?>
             </select>
             <select name="comprador" id="comprador">
@@ -76,20 +90,19 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $stmt->execute();
             $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-             foreach ($usuarios as $usuario) { ?>
-            <option value="<?php echo $usuario['id_usuario']; ?>" <?php if ($venda['usuario_id'] == $usuario['id_usuario']) echo 'selected'; ?>><?php echo $usuario['nome']; ?></option>
-            <?php } ?>
+    foreach ($usuarios as $usuario) { ?>
+        <option value="<?php echo $usuario['id_usuario']; ?>" <?php if ($venda['usuario_id'] == $usuario['id_usuario']) echo 'selected'; ?>><?php echo $usuario['nome']; ?></option>
+    <?php } ?>
             </select>
             <label for="data"></label>
-            <input type="date" name="data" id="data" placeholder="Data" required>
+            <input type="date" name="data" id="data" placeholder="Data" required value="<?php echo $venda['data_venda']; ?>">
             <label for="valor"></label>
-            <input type="number" name="valor" id="valor" value="<?php echo isset($celulares[$produto]) ? $celulares[$produto]['valor'] : 0; ?>" placeholder="Valor" required>
-            <label for="submit"></label>
-            <input class="btn" type="submit" value="Entrar" id="sub" name="submit"/>
+            <input type="number" name="valor" id="valor" value="<?php echo $venda['valor']; ?>" placeholder="Valor" required>
+            <input class="btn" type="submit" value="modificar" id="sub" name="submit"/>
         </form>
     </div>
+    <?php echo $id; ?>
 </main>
-
         <footer>
             <div class="names">
                 <h2>Desenvolvedores:</h2>
@@ -110,7 +123,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             </div>
             </div>
         </footer>
-        <script>
+                <script>
     var celulares = <?php echo json_encode($celulares); ?>;
 
     function atualizarValor() {
@@ -122,5 +135,14 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Chamar a função ao carregar a página e ao mudar a opção
     window.onload = atualizarValor;
 </script>
-</body>
-</html>
+        </body>
+        </html>
+        <?php
+    } else {
+        // Exibir mensagem de erro se a marca não for encontrada
+        echo "<script>alert('Marca não encontrada.');</script>";
+    }
+} else {
+    // Exibir mensagem de erro se o ID não for enviado
+    echo "ID da marca não enviado.";
+}

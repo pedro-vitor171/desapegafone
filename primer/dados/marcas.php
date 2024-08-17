@@ -11,17 +11,28 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/index.css">
+   <link rel="stylesheet" href="../css/index.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <link rel="stylesheet" href="../css/dados.css">
     <title>PrimerPhone</title>
     <style>
-        td button {
+        td .deletar {
             cursor: pointer;
             all: inherit;
             background: #d81f1f;
-            color: #000000;
-            font-size: 2.5dvh;
+            color: #ffffff;
+            font-size: 2.6dvh;
+            padding: .5dvh;
+            border-radius: 5px;
+        }
+        td .alterar {
+            cursor: pointer;
+            all: inherit;
+            background: #1870d5;
+            color: #ffffff;
+            padding: .5dvh;
+            border-radius: 5px;
+            font-size: 2.6dvh;
         }
     </style>
 </head>
@@ -45,6 +56,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Deletar</th>
+                <th>Alterar</th>
             </tr>
             <?php foreach ($usuarios as $row) { ?>
                 <tr>
@@ -52,8 +64,16 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $row['nome']; ?></td>
                     <td>
                     <form method="post" action="delete_alter/delete.php">
-                        <input type="hidden" name="id" value="<?php echo $row['id_marca']; ?>">
-                        <input type="hidden" name="area" value="marcas"> <button type="submit" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
+                        <input type="hidden" name="id" value="<?= $row['id_marca']; ?>">
+                        <input type="hidden" name="area" value="marcas">
+                        <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
+                    </form>
+                    </td>
+                    <td>
+                    <form method="post" action="delete_alter/marca/alterMarca.php">
+                        <input type="hidden" name="id" value="<?= $row['id_marca']; ?>">
+                        <input type="hidden" name="area" value="marcas">
+                        <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
                     </form>
                     </td>
                 </tr>

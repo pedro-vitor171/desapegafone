@@ -16,12 +16,23 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../css/dados.css">
     <title>PrimerPhone</title>
     <style>
-        td button {
+        td .deletar {
             cursor: pointer;
             all: inherit;
             background: #d81f1f;
-            color: #000000;
-            font-size: 2.5dvh;
+            color: #ffffff;
+            font-size: 2.6dvh;
+            padding: .5dvh;
+            border-radius: 5px;
+        }
+        td .alterar {
+            cursor: pointer;
+            all: inherit;
+            background: #1870d5;
+            color: #ffffff;
+            padding: .5dvh;
+            border-radius: 5px;
+            font-size: 2.6dvh;
         }
     </style>
 </head>
@@ -48,50 +59,57 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th>Data</th>
                 <th>Valor</th>
                 <th>Deletar</th>
+                <th>Alterar</th>
             </tr>
             <?php foreach ($usuarios as $row) { ?>
-                <tr>
-                    <td><?php echo $row['id_venda'];?></td>
-                    <td>
-                    <?php
-                $sql_celular = "SELECT nome FROM celulares WHERE id_celular = :celular_id";
-                $stmt_celular = $pdo->prepare($sql_celular);
-                $stmt_celular->bindParam(':celular_id', $row['celular_id']);
+    <tr>
+        <td><?= $row['id_venda']; ?></td>
+        <td>
+            <?php
+            $sql_celular = "SELECT nome FROM celulares WHERE id_celular = :celular_id";
+            $stmt_celular = $pdo->prepare($sql_celular);
+            $stmt_celular->bindParam(':celular_id', $row['celular_id']);
 
-                // Check if the query was executed successfully
-                if ($stmt_celular->execute()) {
+            if ($stmt_celular->execute()) {
                 $celular = $stmt_celular->fetch(PDO::FETCH_ASSOC);
-                echo $celular['nome'];
-                } else {
-                // Handle the case where the query failed (e.g., display a message)
-                echo "Produto não encontrado";
-                }
-                        ?> 
-                        </td>                   
-                        <td>
-                        <?php
-                $sql_usuario = "SELECT nome FROM usuarios WHERE id_usuario = :usuario_id";
-                $stmt_usuario = $pdo->prepare($sql_usuario);
-                $stmt_usuario->bindParam(':usuario_id', $row['usuario_id']);
+                echo $celular['nome'] ?? "Produto não encontrado";
+            } else {
+                echo "Erro ao buscar produto: " . $stmt_celular->errorInfo()[2];
+            }
+            ?>
+        </td>
+        <td>
+            <?php
+            $sql_usuario = "SELECT nome FROM usuarios WHERE id_usuario = :usuario_id";
+            $stmt_usuario = $pdo->prepare($sql_usuario);
+            $stmt_usuario->bindParam(':usuario_id', $row['usuario_id']);
 
-                if ($stmt_usuario->execute()) {
+            if ($stmt_usuario->execute()) {
                 $usuario = $stmt_usuario->fetch(PDO::FETCH_ASSOC);
-                echo $usuario['nome'];
-                } else {
-                echo "Usuário não encontrado";
-                }
-                        ?>
-                        </td>
-                    <td><?php echo $row['data_venda']; ?></td>
-                    <td><?php echo $row['valor']; ?></td>
-                    <td>
-                    <form method="post" action="delete_alter/deleteVd.php">
-                        <input type="hidden" name="id" value="<?php echo $row['id_venda']; ?>">
-                        <input type="hidden" name="area" value="vendas"> <button type="submit" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
-                    </form>
-                    </td>
-                </tr>
-            <?php } ?>
+                echo $usuario['nome'] ?? "Usuário não encontrado";
+            } else {
+                echo "Erro ao buscar usuário: " . $stmt_usuario->errorInfo()[2];
+            }
+            ?>
+        </td>
+        <td><?= $row['data_venda']; ?></td>
+        <td><?= $row['valor']; ?></td>
+        <td>
+            <form method="post" action="delete_alter/deleteVd.php">
+                <input type="hidden" name="id" value="<?= $row['id_venda']; ?>">
+                <input type="hidden" name="area" value="vendas">
+                <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
+            </form>
+        </td>
+        <td>
+            <form method="post" action="delete_alter/venda/alterVd.php">
+                <input type="hidden" name="id" value="<?= $row['id_venda']; ?>">
+                <input type="hidden" name="area" value="vendas">
+                <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
+            </form>
+        </td>
+    </tr>
+<?php } ?>
         </table>
     </main>
 

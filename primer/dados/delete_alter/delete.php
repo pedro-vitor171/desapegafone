@@ -83,33 +83,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo '<script>alert("Erro ao deletar o produto: ' . $stmt->errorInfo()[2] . "</script>";
         }
     }
-    } elseif ($area === 'vendas') {
-        $sql = "DELETE FROM venda WHERE id_venda = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    
-        try {
-            $pdo->beginTransaction();
-            $stmt->execute();
-            $affectedRows = $stmt->rowCount();
-    
-            if ($affectedRows > 0) {
-                $pdo->commit();
-                echo '<script>alert("Registro excluído com sucesso!");</script>';
-                header('Location: ../' . $area . '.php');
-            } else {
-                if ($stmt->errorCode() == '00000') {
-                    echo '<script>alert("Não foi encontrado nenhum registro para excluir.");</script>';
-                } else {
-                    echo '<script>alert("Ocorreu um erro ao excluir o registro. Por favor, verifique os detalhes.");</script>';
-                    error_log("Erro ao deletar registro: " . $stmt->errorInfo()[2] . " - Consulta: " . $sql);
-                }
-                header('location: ../' . $area . '.php');
-            }
-        } catch (PDOException $e) {
-            $pdo->rollBack();
-            error_log("Erro ao deletar registro: " . $e->getMessage() . " - Consulta: " . $sql);
-            echo '<script>alert("Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.");</script>';
-            header('location: ../' . $area . '.php');
-        }
-    }
+    } 

@@ -5,8 +5,7 @@ $id = $_POST['id'];
 $area = $_POST['area'];
 
 function excluirVenda($id) {
-    global $pdo; // Assumindo que $pdo está definido no escopo global
-
+    global $pdo; 
     $sql = "DELETE FROM venda WHERE id_venda = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
