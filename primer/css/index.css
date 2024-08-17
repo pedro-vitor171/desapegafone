@@ -24,6 +24,8 @@ body {
     align-items: center;
     background-color: #000000;
     height: 10dvh;
+    position: sticky;
+    top: 0;
 }
 
 a,

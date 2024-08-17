@@ -20,17 +20,22 @@
             padding: 10px 0px;
             width: 800px;
         }
-            select{
-                all: inherit;
-                width: 550px;
-                height: 65px;
-                border-radius: 10px;
-                padding: 1px 20px;
-                font-size: 25px;
-                background-color: none;
-                color: #F9F6F5;
-                margin-top: -2dvh;
-                margin-bottom: -4dvh;
+        select{
+            all: inherit;
+            width: 550px;
+            height: 65px;
+            border-radius: 10px;
+            padding: 20px 20px 0px;
+            font-size: 36px;
+            background-color: #F9F6F5;
+            color: #000000;
+            margin-top: -1.5dvh;
+            margin-bottom: -2dvh;
+        }
+        option {
+        color: #000000;
+        background-color: #fff;
+        padding: 5px;
             }
     </style>
     <title>Cadastro</title>
@@ -39,7 +44,7 @@
 
     <div class="subnav">
                 <a href="../sessao/sessao.php">Conta</a>
-                <a href="">Sobre</a>
+                <a href="../sessao/user.php">Inicio</a>
                 <div class="log">
                     <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
                 </div>

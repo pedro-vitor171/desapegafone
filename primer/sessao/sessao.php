@@ -90,7 +90,7 @@ $login = $_SESSION['email'];
 
     <div class="subnav">
         <a href="sessao.php">Conta</a>
-        <a href="">Sobre</a>
+        <a href="user.php">Inicio</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>

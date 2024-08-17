@@ -31,7 +31,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="subnav">
         <a href="../sessao/sessao.php">Conta</a>
-        <a href="">Sobre</a>
+        <a href="../sessao/user.php">Inicio</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
@@ -54,28 +54,38 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $row['id_venda'];?></td>
                     <td>
                     <?php
-                            $sql_celular = "SELECT nome FROM celulares WHERE id_celular = :celular_id";
-                            $stmt_celular = $pdo->prepare($sql_celular);
-                            $stmt_celular->bindParam(':celular_id', $row['celular_id']);
-                            $stmt_celular->execute();
-                            $celular = $stmt_celular->fetch(PDO::FETCH_ASSOC);
-                            echo $celular['nome'];
+                $sql_celular = "SELECT nome FROM celulares WHERE id_celular = :celular_id";
+                $stmt_celular = $pdo->prepare($sql_celular);
+                $stmt_celular->bindParam(':celular_id', $row['celular_id']);
+
+                // Check if the query was executed successfully
+                if ($stmt_celular->execute()) {
+                $celular = $stmt_celular->fetch(PDO::FETCH_ASSOC);
+                echo $celular['nome'];
+                } else {
+                // Handle the case where the query failed (e.g., display a message)
+                echo "Produto não encontrado";
+                }
                         ?> 
                         </td>                   
                         <td>
                         <?php
-                            $sql_usuario = "SELECT nome FROM usuarios WHERE id_usuario = :usuario_id";
-                            $stmt_usuario = $pdo->prepare($sql_usuario);
-                            $stmt_usuario->bindParam(':usuario_id', $row['usuario_id']);
-                            $stmt_usuario->execute();
-                            $usuario = $stmt_usuario->fetch(PDO::FETCH_ASSOC);
-                            echo $usuario['nome'];
+                $sql_usuario = "SELECT nome FROM usuarios WHERE id_usuario = :usuario_id";
+                $stmt_usuario = $pdo->prepare($sql_usuario);
+                $stmt_usuario->bindParam(':usuario_id', $row['usuario_id']);
+
+                if ($stmt_usuario->execute()) {
+                $usuario = $stmt_usuario->fetch(PDO::FETCH_ASSOC);
+                echo $usuario['nome'];
+                } else {
+                echo "Usuário não encontrado";
+                }
                         ?>
                         </td>
                     <td><?php echo $row['data_venda']; ?></td>
                     <td><?php echo $row['valor']; ?></td>
                     <td>
-                    <form method="post" action="delete_alter/delete.php">
+                    <form method="post" action="delete_alter/deleteVd.php">
                         <input type="hidden" name="id" value="<?php echo $row['id_venda']; ?>">
                         <input type="hidden" name="area" value="vendas"> <button type="submit" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
                     </form>

@@ -31,7 +31,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="subnav">
         <a href="../sessao/sessao.php">Conta</a>
-        <a href="">Sobre</a>
+        <a href="../sessao/user.php">Inicio</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
