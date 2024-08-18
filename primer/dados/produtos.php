@@ -67,12 +67,12 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $row['nome']; ?></td>
                     <td>
                         <?php
-                            $sql_marca = "SELECT nome FROM marca WHERE id_marca = :marca_id";
-                            $stmt_marca = $pdo->prepare($sql_marca);
-                            $stmt_marca->bindParam(':marca_id', $row['marca_id']);
-                            $stmt_marca->execute();
-                            $marca = $stmt_marca->fetch(PDO::FETCH_ASSOC);
-                            echo $marca['nome'];
+                        $sql_marca = "SELECT nome FROM marca WHERE id_marca = :marca_id";
+                        $stmt_marca = $pdo->prepare($sql_marca);
+                        $stmt_marca->bindParam(':marca_id', $row['marca_id']);
+                        $stmt_marca->execute();
+                        $marca = $stmt_marca->fetch(PDO::FETCH_ASSOC);
+                         echo $marca['nome'];
                         ?>
                     </td>
                     <td><?php echo $row['geracao']; ?></td>

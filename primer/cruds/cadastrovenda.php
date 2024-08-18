@@ -16,14 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $data_formatada = date('Y-m-d', strtotime($data));
 
-    $sql_verificar_usuario = "SELECT id_usuario FROM usuarios WHERE nome = :comprador";
+    $sql_verificar_usuario = "SELECT id_usuario FROM usuarios WHERE id_usuario = :comprador";
     $stmt_verificar_usuario = $pdo->prepare($sql_verificar_usuario);
     $stmt_verificar_usuario->bindParam(':comprador', $comprador);
     $stmt_verificar_usuario->execute();
     $usuario_id = $stmt_verificar_usuario->fetchColumn();
-
+    
     if (!$usuario_id) {
-        echo "<script>alert('O comprador informado não existe.');</script>";
+        echo "<script>alert('Não foi encontrado um usuário com o ID informado.');</script>";
         echo "<script>window.location.href = '../php/cadastrovd.php'</script>";
         exit;
     }

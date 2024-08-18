@@ -8,6 +8,7 @@ $celulares = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $celulares[$row['id_celular']] = $row;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -70,16 +71,14 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             </select>
             <select name="comprador" id="comprador">
             <?php
-            // Consulta para buscar os usuários
-            $sql = "SELECT id_usuario, nome FROM usuarios";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-            $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-             foreach ($usuarios as $usuario) { ?>
-            <option value="<?php echo $usuario['id_usuario']; ?>" <?php if ($venda['usuario_id'] == $usuario['id_usuario']) echo 'selected'; ?>><?php echo $usuario['nome']; ?></option>
+                        $sql = "SELECT id_usuario, nome FROM usuarios";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute();
+                        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($usuarios as $usuario) { ?>
+                <option value="<?php echo $usuario['id_usuario']; ?>"><?php echo $usuario['nome']; ?></option>
             <?php } ?>
-            </select>
+        </select>
             <label for="data"></label>
             <input type="date" name="data" id="data" placeholder="Data" required>
             <label for="valor"></label>

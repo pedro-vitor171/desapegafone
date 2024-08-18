@@ -101,7 +101,6 @@ if (isset($id)) {
             <input class="btn" type="submit" value="modificar" id="sub" name="submit"/>
         </form>
     </div>
-    <?php echo $id; ?>
 </main>
         <footer>
             <div class="names">

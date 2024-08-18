@@ -7,13 +7,13 @@ $id = $_POST['id'];
 // Verificar se o ID foi enviado
 if (isset($id)) {
     // Carregar os dados da marca para pré-preenchimento do formulário
-    $sql_marca = "SELECT * FROM marca WHERE id_marca = :id_marca";
-    $stmt_marca = $pdo->prepare($sql_marca);
-    $stmt_marca->bindParam(':id_marca', $id);
-    $stmt_marca->execute();
-    $marca = $stmt_marca->fetch(PDO::FETCH_ASSOC);
+    $sql_usuario = "SELECT * FROM usuarios WHERE id_usuario = :id_usuario";
+    $stmt_usuario = $pdo->prepare($sql_usuario);
+    $stmt_usuario->bindParam(':id_usuario', $id);
+    $stmt_usuario->execute();
+    $usuario = $stmt_usuario->fetch(PDO::FETCH_ASSOC);
 
-    if ($marca) {
+    if ($usuario) {
         // Exibir formulário de alteração com os dados pré-preenchidos
         ?>
         <!DOCTYPE html>
@@ -46,18 +46,25 @@ if (isset($id)) {
                 <a href="../../../php/loginuser.html">Login</a>            
         </div>
 
-        <main>
-            <div class="for">
-        <form method="post" action="authMarca.php">
-            <h1>Modificar Marca</h1>
-            <input type="hidden" name="id" value="<?= $marca['id_marca']; ?>">
-            <label for="nome"></label>
-            <input type="text" name="nome" value="<?= $marca['nome']; ?>">
-            <label for="submit"></label>
-            <input class="btn" type="submit" value="modificar" id="sub" name="submit"/>
+        <main>       
+            <div class="for">     
+            <form action="authUser.php" method="post">
+                <h1>Modificar usuario</h1>
+                <input type="hidden" name="id" value="<?= $usuario['id_usuario']; ?>">
+                <label for="nome"></label>
+                <input type="text" name="nome" id="nome" value="<?= $usuario['nome']; ?>" placeholder="Nome" required>
+                <label for="telefone"></label>
+                <input type="text" name="telefone" id="telefone" value="<?= $usuario['telefone']; ?>" placeholder="Telefone" required>
+                <label for="email"></label>
+                <input type="email" name="email" id="email" value="<?= $usuario['email']; ?>" placeholder="Email"  required>
+                <label for="senha"></label>
+                <input type="password" name="senha" id="senha" value="<?= $usuario['senha']; ?>" placeholder="Senha" required>
+                <label for="submit"></label>
+                <input class="btn" type="submit" value="Entrar" id="sub" name="submit"/>
             </form>
-        </div>
+            </div>
         </main>
+
         <footer>
             <div class="names">
                 <h2>Desenvolvedores:</h2>
