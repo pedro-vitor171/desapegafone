@@ -113,7 +113,7 @@ require_once '../cruds/conexao.php';
           if (file_exists($imagem)) {
               $imagemSrc = $imagem;
           } else {
-              $imagemSrc = "https://t.ctcdn.com.br/BX4PjxFUUDLPTZnFitPWS1oSjOU=/i723190.jpeg"; // Sua imagem padrão
+              $imagemSrc = "https://t.ctcdn.com.br/BX4PjxFUUDLPTZnFitPWS1oSjOU=/i723190.jpeg"; //imagem padrão
           }
           ?>
           <div class="prod">
