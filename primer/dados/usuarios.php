@@ -67,7 +67,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $row['telefone']; ?></td>
                     <td><?php echo $row['email']; ?></td>
                     <td>
-                    <form method="post" action="delete_alter/deleteVd.php">
+                    <form method="post" action="delete_alter/delete.php">
                         <input type="hidden" name="id" value="<?= $row['id_usuario']; ?>">
                         <input type="hidden" name="area" value="usuarios">
                         <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
