@@ -28,20 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo->beginTransaction();
     
-            // Seleciona os IDs dos celulares associados à marca
+            $stmt = $pdo->prepare("DELETE FROM venda WHERE celular_id IN (SELECT id_celular FROM celulares WHERE marca_id = :id_marca)");
+            $stmt->bindParam(':id_marca', $id);
+            $stmt->execute();    
+
             $stmt = $pdo->prepare("SELECT id_celular FROM celulares WHERE marca_id = :id_marca");
             $stmt->bindParam(':id_marca', $id);
             $stmt->execute();
             $celulares = $stmt->fetchAll(PDO::FETCH_COLUMN);
     
-            // Deleta os celulares
             foreach ($celulares as $celularId) {
                 $stmt = $pdo->prepare("DELETE FROM celulares WHERE id_celular = :id_celular");
                 $stmt->bindParam(':id_celular', $celularId);
                 $stmt->execute();
             }
     
-            // Deleta a marca
             $stmt = $pdo->prepare("DELETE FROM marca WHERE id_marca = :id_marca");
             $stmt->bindParam(':id_marca', $id);
             $stmt->execute();
