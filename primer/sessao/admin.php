@@ -99,7 +99,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['senha'])) {
     </div>
 
     <main>
-        <h1>Seja Bem vindo <?php echo $_SESSION['admin_nome']; ?> </h1>
+        <h1>Seja Bem vindo <?php echo $_SESSION['nome']; ?> </h1>
         <div class="btns">
             <a href="../php/cadastropd.php">Cadastrar Produto</a>
             <a href="../php/cadastromarca.html">Cadastrar Marca</a>

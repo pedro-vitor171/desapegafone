@@ -8,6 +8,12 @@ $celulares = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $celulares[$row['id_celular']] = $row;
 }
+$usuarios = []; 
+$sql = "SELECT id_usuario, nome FROM usuarios";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC)
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -47,6 +53,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         background-color: #fff;
         padding: 5px;
             }
+        h1{
+            margin-bottom: 2.5dvh;
+            }
     </style>
     <title>Cadastro venda</title>
 </head>
@@ -64,17 +73,17 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
         <main>
     <div class="for">
-    <form action="../cruds/cadastrovenda.php" method="post">
+    <form action="../cruds/cadastrocompra.php" method="post">
     <h1>Realizar compra</h1>
-    <input type="hidden" name="id" value="<?= $usuario['id_usuario']; ?>">
-
-    <span><b>Produto:</b> <?= $celulares[$_POST['celular_id']]['nome']; ?></span><br>
-    <span><b>Valor:</b> R$ <?= number_format($_POST['valor'], 2, ',', '.'); ?></span><br>
-    <span><b>Data da compra:</b> <?= date('Y-m-d'); ?></span><br>
-    <span><b>Comprador:</b> <?= $_SESSION['email']; ?></span><br>
-
+    <input type="hidden" name="id" value="<?= $usuarios[0]['id_usuario']; ?>">
+            <br>
+    <span><b>Produto:</b> <?= $celulares[$_POST['celular_id']]['nome']; ?></span>
+    <span><b>Valor:</b> R$ <?= number_format($_POST['valor'], 2, ',', '.'); ?></span>
+    <span><b>Data da compra:</b> <?= date('Y-m-d'); ?></span>
+    <span><b>Comprador:</b> <?= $usuarios[0]['nome']; ?></span>
+            <br>
     <input type="hidden" name="celular_id" value="<?= $_POST['celular_id']; ?>">
-    <input type="hidden" name="comprador" value="<?= $_SESSION['email']; ?>">
+    <input type="hidden" name="comprador" value="<?= $usuarios[0]['id_usuario']; ?>">
     <input type="hidden" name="data" value="<?= date('Y-m-d'); ?>">
     <input type="hidden" name="valor" value="<?= $_POST['valor']; ?>">
 

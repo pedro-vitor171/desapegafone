@@ -83,6 +83,9 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
             background: #1870d5;
             transform: scale(1.05);
         }
+        h1{
+            font-size: 6dvh;
+        }
     </style>
 </head>
 <body>
