@@ -28,27 +28,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo->beginTransaction();
     
-            $stmt = $pdo->prepare("DELETE FROM venda WHERE celular_id IN (SELECT id_celular FROM celulares WHERE marca_id = :id_marca)");
-            $stmt->bindParam(':id_marca', $id);
-            $stmt->execute();    
-
-            $stmt = $pdo->prepare("SELECT id_celular FROM celulares WHERE marca_id = :id_marca");
+            // Verificar se existem vendas para os celulares da marca
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM venda WHERE celular_id IN (SELECT id_celular FROM celulares WHERE marca_id = :id_marca)");
             $stmt->bindParam(':id_marca', $id);
             $stmt->execute();
-            $celulares = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $numVendas = $stmt->fetchColumn();
     
-            foreach ($celulares as $celularId) {
-                $stmt = $pdo->prepare("DELETE FROM celulares WHERE id_celular = :id_celular");
-                $stmt->bindParam(':id_celular', $celularId);
+            if ($numVendas > 0) {
+                echo '<script>alert("Não é possível excluir a marca. Existem vendas associadas aos celulares desta marca.");</script>';
+            } else {
+                // Se não houver vendas, prosseguir com a exclusão
+                $stmt = $pdo->prepare("SELECT id_celular FROM celulares WHERE marca_id = :id_marca");
+                $stmt->bindParam(':id_marca', $id);
                 $stmt->execute();
+                $celulares = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    
+                foreach ($celulares as $celularId) {
+                    $stmt = $pdo->prepare("DELETE FROM celulares WHERE id_celular = :id_celular");
+                    $stmt->bindParam(':id_celular', $celularId);
+                    $stmt->execute();
+                }
+    
+                $stmt = $pdo->prepare("DELETE FROM marca WHERE id_marca = :id_marca");
+                $stmt->bindParam(':id_marca', $id);
+                $stmt->execute();
+    
+                $pdo->commit();
+                echo '<script>alert("Marca e celulares associados excluídos com sucesso!");</script>';
             }
     
-            $stmt = $pdo->prepare("DELETE FROM marca WHERE id_marca = :id_marca");
-            $stmt->bindParam(':id_marca', $id);
-            $stmt->execute();
-    
-            $pdo->commit();
-            echo '<script>alert("Marca e celulares associados excluídos com sucesso!");</script>';
             header('location: ../' . $area . '.php');
         } catch (PDOException $e) {
             $pdo->rollBack();

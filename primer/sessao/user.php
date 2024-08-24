@@ -1,5 +1,6 @@
 <?php
 require_once '../cruds/conexao.php';
+session_start();
 
 $sql = "SELECT c.id_celular, c.nome AS nome_celular, m.nome AS nome_marca, c.valor, c.estoque
         FROM celulares c
@@ -7,7 +8,6 @@ $sql = "SELECT c.id_celular, c.nome AS nome_celular, m.nome AS nome_marca, c.val
 
 $stmt = $pdo->query($sql);
 $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
@@ -102,7 +102,6 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php
       foreach ($celulares as $celular) {
           $imagem = "../css/imgs/marcas/{$celular['nome_marca']}.jpg";
-
           if (file_exists($imagem)) {
               $imagemSrc = $imagem;
           } else {
@@ -116,8 +115,9 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <p><?= $celular['nome_marca'] ?></p>
               <p>Produtos disponiveis: <?= $celular['estoque'] ?></p>
               <p>Preço: R$ <?= number_format($celular['valor'], 2, ',', '.') ?></p>
-              <form action="../php/cadastrovd.php" method="POST">
-                <input type="hidden" name="celular_id" value="<?= $celular['id_celular'] ?>">
+              <form action="../php/cadastrocp.php" method="POST">
+                <input type="hidden" name="celular_id" value="<?= $celular['id_celular'];?>">
+                <input type="hidden" name="valor" value="<?= $celular['valor']; ?>">
                 <button type="submit">Comprar</button>
             </form>
             </li>

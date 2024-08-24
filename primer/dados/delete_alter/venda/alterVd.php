@@ -88,7 +88,6 @@ if (isset($id)) {
             </select>
             <select name="comprador" id="comprador">
             <?php
-            // Consulta para buscar os usuários
             $sql = "SELECT id_usuario, nome FROM usuarios";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();

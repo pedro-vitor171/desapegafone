@@ -3,7 +3,7 @@ require_once '../cruds/conexao.php';
 $sql = "SELECT * FROM celulares ORDER BY id_celular DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -57,36 +57,38 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th>Nome</th>
                 <th>Marca</th>
                 <th>Geração</th>
+                <th>Quantidade</th>
                 <th>Preço</th>
                 <th>Deletar</th>
                 <th>Alterar</th>
             </tr>
-            <?php foreach ($usuarios as $row) { ?>
+            <?php foreach ($celulares as $celular) { ?>
                 <tr>
-                    <td><?php echo $row['id_celular']; ?></td>
-                    <td><?php echo $row['nome']; ?></td>
+                    <td><?php echo $celular['id_celular']; ?></td>
+                    <td><?php echo $celular['nome']; ?></td>
                     <td>
                         <?php
                         $sql_marca = "SELECT nome FROM marca WHERE id_marca = :marca_id";
                         $stmt_marca = $pdo->prepare($sql_marca);
-                        $stmt_marca->bindParam(':marca_id', $row['marca_id']);
+                        $stmt_marca->bindParam(':marca_id', $celular['marca_id']);
                         $stmt_marca->execute();
                         $marca = $stmt_marca->fetch(PDO::FETCH_ASSOC);
                          echo $marca['nome'];
                         ?>
                     </td>
-                    <td><?php echo $row['geracao']; ?></td>
-                    <td><?php echo $row['valor']." R$"; ?></td>
+                    <td><?php echo $celular['geracao']; ?></td>
+                    <td><?php echo $celular['estoque'] ?></td>
+                    <td><?php echo $celular['valor']." R$"; ?></td>
                     <td>
                     <form method="post" action="delete_alter/delete.php">
-                        <input type="hidden" name="id" value="<?= $row['id_celular']; ?>">
+                        <input type="hidden" name="id" value="<?= $celular['id_celular']; ?>">
                         <input type="hidden" name="area" value="produtos">
                         <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
                     </form>
                     </td>
                     <td>
                     <form method="post" action="delete_alter/produtos/alterProd.php">
-                        <input type="hidden" name="id" value="<?= $row['id_celular']; ?>">
+                        <input type="hidden" name="id" value="<?= $celular['id_celular']; ?>">
                         <input type="hidden" name="area" value="produtos">
                         <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
                     </form>

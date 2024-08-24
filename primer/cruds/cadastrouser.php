@@ -5,11 +5,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     $telefone = $_POST['telefone'];
     $email = $_POST['email'];
-    // Criptografar a senha antes de inserir no banco
     $senha_criptografada = password_hash($_POST['senha'], PASSWORD_DEFAULT);
 
     try {
-        // Verificar se o email já existe antes de inserir
         $sql_verificar = "SELECT * FROM usuarios WHERE email = :email";
         $stmt_verificar = $pdo->prepare($sql_verificar);
         $stmt_verificar->bindParam(':email', $email);
@@ -21,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Inserir o usuário
         $sql = "INSERT INTO usuarios (nome, telefone, email, senha) VALUES (:nome, :telefone, :email, :senha)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome);

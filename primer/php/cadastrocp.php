@@ -1,6 +1,6 @@
 <?php
 require_once '../cruds/conexao.php';
-
+session_start();
 $sql = "SELECT id_celular, nome, valor FROM celulares";
 $stmt = $pdo->query($sql);
 
@@ -8,7 +8,6 @@ $celulares = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $celulares[$row['id_celular']] = $row;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -49,7 +48,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         padding: 5px;
             }
     </style>
-    <title>Realizar venda</title>
+    <title>Cadastro venda</title>
 </head>
 <body>
 
@@ -65,31 +64,22 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
         <main>
     <div class="for">
-        <form action="../cruds/cadastrovenda.php" method="post">
-            <h1>Realizar venda</h1>
-            <label for="produto"></label>
-            <select name="produto" id="produto"  onchange="atualizarValor()">
-                <?php foreach ($celulares as $id_celular => $celular) { ?>
-                    <option value="<?php echo $id_celular; ?>"><?php echo '+ '.$celular['nome']; ?></option>
-                <?php } ?>
-            </select>
-            <select name="comprador" id="comprador">
-            <?php
-                        $sql = "SELECT id_usuario, nome FROM usuarios";
-                        $stmt = $pdo->prepare($sql);
-                        $stmt->execute();
-                        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($usuarios as $usuario) { ?>
-                <option value="<?php echo $usuario['id_usuario']; ?>"><?php echo $usuario['nome']; ?></option>
-            <?php } ?>
-        </select>
-            <label for="data"></label>
-            <input type="date" name="data" id="data" placeholder="Data" required>
-            <label for="valor"></label>
-            <input type="number" name="valor" id="valor" value="<?php echo isset($celulares[$produto]) ? $celulares[$produto]['valor'] : 0; ?>" placeholder="Valor" required>
-            <label for="submit"></label>
-            <input class="btn" type="submit" value="Entrar" id="sub" name="submit"/>
-        </form>
+    <form action="../cruds/cadastrovenda.php" method="post">
+    <h1>Realizar compra</h1>
+    <input type="hidden" name="id" value="<?= $usuario['id_usuario']; ?>">
+
+    <span><b>Produto:</b> <?= $celulares[$_POST['celular_id']]['nome']; ?></span><br>
+    <span><b>Valor:</b> R$ <?= number_format($_POST['valor'], 2, ',', '.'); ?></span><br>
+    <span><b>Data da compra:</b> <?= date('Y-m-d'); ?></span><br>
+    <span><b>Comprador:</b> <?= $_SESSION['email']; ?></span><br>
+
+    <input type="hidden" name="celular_id" value="<?= $_POST['celular_id']; ?>">
+    <input type="hidden" name="comprador" value="<?= $_SESSION['email']; ?>">
+    <input type="hidden" name="data" value="<?= date('Y-m-d'); ?>">
+    <input type="hidden" name="valor" value="<?= $_POST['valor']; ?>">
+
+    <input class="btn" type="submit" value="Confirmar compra" id="sub" name="submit" />
+</form>
     </div>
 </main>
 
