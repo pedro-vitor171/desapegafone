@@ -1,16 +1,12 @@
 <?php
-// Conectar ao banco de dados
 require_once '../cruds/conexao.php';
-// Consultar os produtos
-    $stmt = $pdo->query("SELECT * FROM celulares");
-    $celulares = $stmt->fetchAll();
-    
-    // Consulta para obter todos os celulares com suas respectivas marcas
-    $sql = "SELECT c.id_celular, c.nome AS nome_celular, m.nome AS nome_marca, c.valor
-            FROM celulares c
-            INNER JOIN marca m ON c.marca_id = m.id_marca";
-    $stmt = $pdo->query($sql);
-    $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$sql = "SELECT c.id_celular, c.nome AS nome_celular, m.nome AS nome_marca, c.valor, c.estoque
+        FROM celulares c
+        INNER JOIN marca m ON c.marca_id = m.id_marca";
+
+$stmt = $pdo->query($sql);
+$celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -104,16 +100,13 @@ require_once '../cruds/conexao.php';
     <h1>Produtos</h1>
     <div class="line">
     <?php
-      // Exibe os produtos (loop only once)
       foreach ($celulares as $celular) {
-          // Define o caminho da imagem com base na marca
           $imagem = "../css/imgs/marcas/{$celular['nome_marca']}.jpg";
 
-          // Verifica se a imagem existe, caso contrário, usa uma imagem padrão
           if (file_exists($imagem)) {
               $imagemSrc = $imagem;
           } else {
-              $imagemSrc = "https://t.ctcdn.com.br/BX4PjxFUUDLPTZnFitPWS1oSjOU=/i723190.jpeg"; //imagem padrão
+              $imagemSrc = "https://t.ctcdn.com.br/BX4PjxFUUDLPTZnFitPWS1oSjOU=/i723190.jpeg"; 
           }
           ?>
           <div class="prod">
@@ -121,6 +114,7 @@ require_once '../cruds/conexao.php';
               <img src="<?= $imagemSrc ?>" alt="<?= $celular['nome_celular'] ?>">
               <h2><?= $celular['nome_celular'] ?></h2>
               <p><?= $celular['nome_marca'] ?></p>
+              <p>Produtos disponiveis: <?= $celular['estoque'] ?></p>
               <p>Preço: R$ <?= number_format($celular['valor'], 2, ',', '.') ?></p>
               <form action="../php/cadastrovd.php" method="POST">
                 <input type="hidden" name="celular_id" value="<?= $celular['id_celular'] ?>">

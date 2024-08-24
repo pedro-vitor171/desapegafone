@@ -25,6 +25,10 @@ if (isset($id)) {
     <link rel="stylesheet" href="../../../css/login_cadastro.css">
     <link rel="shortcut icon" href="../../../css/imgs/arch.svg" type="image/x-icon">
     <style>
+      main{
+            padding-top: 10dvh;
+            padding-bottom: 10dvh;
+        }
         form{
             display: grid;
             place-items: center;

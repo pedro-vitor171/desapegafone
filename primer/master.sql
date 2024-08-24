@@ -5,13 +5,14 @@ create table marca (
     nome varchar(50)
 );
 
-create table celulares (
-    id_celular int primary key auto_increment,
-    nome varchar(100),
-    marca_id int,
-    geracao int,
-    valor float(10,2),
-    foreign key (marca_id) references marca(id_marca)
+CREATE TABLE celulares (
+    id_celular INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    marca_id INT,
+    geracao INT,
+    valor FLOAT(10,2),
+    estoque INT,
+    FOREIGN KEY (marca_id) REFERENCES marca(id_marca)
 );
 
 create table usuarios (
@@ -31,3 +32,15 @@ create table venda (
     foreign key (celular_id) references celulares(id_celular),
     foreign key (usuario_id) references usuarios(id_usuario)
 );
+
+CREATE TABLE adm (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    cnpj VARCHAR(18) UNIQUE,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL
+);
+
+
+INSERT INTO adm (nome, cnpj, email, senha)
+VALUES ('Administrador Principal', '12345678901234', 'admin@example.com', 'senha_hash');

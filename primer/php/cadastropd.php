@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="../css/login_cadastro.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <style>
+        main{
+            padding-top: 10dvh;
+            padding-bottom: 10dvh;
+        }
         form{
             display: grid;
             place-items: center;
@@ -68,6 +72,8 @@
                 <input type="text" name="geracao" id="geracao" placeholder="geracao"  required>
                 <label for="valor"></label>
                 <input type="number" name="valor" id="valor" placeholder="valor" required>
+                <label for="estoque"></label>
+                <input type="number" name="estoque" id="estoque" placeholder="Estoque" required>
                 <label for="submit"></label>
                 <input class="btn" type="submit" value="cadastrar" id="sub" name="submit"/>
             </form>

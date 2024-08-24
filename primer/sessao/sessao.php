@@ -1,11 +1,25 @@
 <?php
 session_start();
 if ((!isset($_SESSION['email']) == true) and (!isset($_SESSION['senha']) == true)) {
-    unset($_SESSION['email']);
-    unset($_SESSION['senha']);
-    header('location: ../php/loginuser.html');
+  unset($_SESSION['email']);
+  unset($_SESSION['senha']);
+  echo "<script>window.location.href   
+ ='../php/loginuser.html'</script>";
+  echo "alert('Por favor, realize o login.')";
 }
 $login = $_SESSION['email'];
+
+require_once '../cruds/conexao.php';
+
+$sql = "SELECT v.*, c.nome AS celular_nome, u.nome AS usuario_nome
+        FROM venda v
+        INNER JOIN celulares c ON v.celular_id = c.id_celular
+        INNER JOIN usuarios u ON v.usuario_id = u.id_usuario
+        WHERE u.email = :email"; 
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':email', $login);
+$stmt->execute();
+$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -15,6 +29,7 @@ $login = $_SESSION['email'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/dados.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <title>PrimerPhone</title>
     <style>
@@ -23,10 +38,10 @@ $login = $_SESSION['email'];
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2dvh;
+            gap: 0dvh;
             padding-bottom: 2dvh;
             width: 100%;
-            height: 100vh;
+            height: 90vh;
         }
 
         main a {
@@ -44,8 +59,8 @@ $login = $_SESSION['email'];
         main h1 {
             background: none;
             font-size: 5dvh;
-            margin-top: 1dvh;
-            margin-bottom: -6dvh;
+            margin-top: -36dvh;
+            margin-bottom: -15dvh;
         }
 
         main a {
@@ -74,14 +89,6 @@ $login = $_SESSION['email'];
             color: #ffffff;
             border: .5dvh solid #1870d5;
         }
-
-        .btns {
-            display: grid;
-            gap: 4dvh;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            margin-bottom: 7dvh;
-        }
     </style>
 </head>
 
@@ -100,17 +107,28 @@ $login = $_SESSION['email'];
 
     <main>
         <h1>Seja Bem vindo <?php echo $login; ?></h1>
-        <div class="btns">
-            <a href="../php/cadastropd.php">Cadastrar Produto</a>
-            <a href="../php/cadastromarca.html">Cadastrar Marca</a>
-            <a href="../php/cadastrovd.php">Realizar Venda</a>
-            <a href="../dados/marcas.php" id="dados">Marcas</a>
-            <a href="../dados/produtos.php" id="dados">Produtos</a>
-            <a href="../dados/vendas.php" id="dados">Vendas</a>
-            <a href="../dados/usuarios.php" id="dados">Usuarios</a>
-            <a href="../cruds/exit.php" id="sair">Sair</a>
-        </div>
+  <table id="customers">
+    <tr>
+      <th>ID</th>
+      <th>Produto</th>
+      <th>Comprador</th>
+      <th>Data</th>
+      <th>Valor</th>
+    </tr>
+    <?php foreach ($usuarios as $row) { ?>
+    <tr>
+      <td><?= $row['id_venda']; ?></td>
+      <td><?= $row['celular_nome']; ?></td>
+      <td><?= $row['usuario_nome']; ?></td>
+      <td><?= $row['data_venda']; ?></td>
+      <td><?= $row['valor']; ?></td>
+
+    </tr>
+    <?php } ?>
+  </table>
     </main>
+
+
 
     <footer>
         <div class="names">
@@ -122,7 +140,8 @@ $login = $_SESSION['email'];
         <div class="names">
             <h2>Contatos:</h2>
             <p>Numero de telefone: 77 95590-3454</p>
-            <p>E-mail: sentarebolando@gmail.com</p>
+            <p>E-mail: pedromario@gmail.com</p>
+            <p><a href="adminlog.php">Administrador</a></p>
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>

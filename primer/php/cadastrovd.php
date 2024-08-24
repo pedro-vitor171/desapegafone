@@ -19,6 +19,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     <link rel="stylesheet" href="../css/login_cadastro.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <style>
+       main{
+            padding-top: 10dvh;
+            padding-bottom: 10dvh;
+        }
         form{
             display: grid;
             place-items: center;
@@ -62,7 +66,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         <main>
     <div class="for">
         <form action="../cruds/cadastrovenda.php" method="post">
-            <h1>Cadastro venda</h1>
+            <h1>Realizar venda</h1>
             <label for="produto"></label>
             <select name="produto" id="produto"  onchange="atualizarValor()">
                 <?php foreach ($celulares as $id_celular => $celular) { ?>

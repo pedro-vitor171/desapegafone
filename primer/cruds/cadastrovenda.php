@@ -5,10 +5,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $celular_id = $_POST['produto'];
     $comprador = $_POST['comprador'];
+    $estoque = $_POST['estoque'];
     $data = $_POST['data'];
     $valor = $_POST['valor'];
 
-    if (empty($celular_id) || empty($comprador) || empty($data) || empty($valor)) {
+    if (empty($celular_id) || empty($comprador) || empty($data) || empty($valor) || empty($estoque)) {
         echo "<script>alert('Todos os campos são obrigatórios.');</script>";
         echo "<script>window.location.href = '../php/cadastrovd.php'</script>";
         exit;
@@ -28,12 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $sql = "INSERT INTO venda (celular_id, usuario_id, data_venda, valor) VALUES (:celular_id, :usuario_id, :data, :valor)";
+    $sql = "INSERT INTO venda (celular_id, usuario_id, data_venda, valor, estoque) VALUES (:celular_id, :usuario_id, :data, :valor, :estoque)";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':celular_id', $celular_id);
     $stmt->bindParam(':usuario_id', $usuario_id);
     $stmt->bindParam(':data', $data_formatada);
     $stmt->bindParam(':valor', $valor);
+    $stmt->bindParam('estoque', $estoque);
     try {
         $stmt->execute();
         echo "<script>alert('Venda cadastrada com sucesso!');</script>";
