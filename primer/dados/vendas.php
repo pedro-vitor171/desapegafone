@@ -93,7 +93,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             ?>
         </td>
         <td><?= $row['data_venda']; ?></td>
-        <td><?= $row['valor']; ?></td>
+        <td><?= $row['valor']." R$"; ?></td>
         <td>
             <form method="post" action="delete_alter/deleteVd.php">
                 <input type="hidden" name="id" value="<?= $row['id_venda']; ?>">
@@ -123,8 +123,9 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="names">
                 <h2>Contatos:</h2>
                 <p>Numero de telefone: 77 95590-3454</p>
-                <p>E-mail: sentarebolando@gmail.com</p>
-            </div>
+                <p>E-mail: PrimerPhone@gmail.com</p>
+                <p><a href="../sessao/adminlog.php">Adminlog</a></p>
+                <p><a href="../sessao/admin.php">Admins</a></p>            </div>
             <div class="names">
                 <h2>Redes Sociais:</h2>
                 <p>- Github</p>

@@ -16,21 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
-            // Destruir a sessão do usuário antes de iniciar a sessão do administrador
-            session_unset();
-            session_destroy();
-
-            // Iniciar a sessão do administrador
             session_start();
             $_SESSION['nome'] = $result['nome'];
             $_SESSION['email'] = $result['email'];
             $_SESSION['cnpj'] = $result['cnpj'];
             $_SESSION['senha'] = $result['senha'];
-
             echo "<script>window.location.href = '../sessao/admin.php';</script>";
             echo "<script>alert('Login realizado com sucesso.');</script>";
         } else {
-            // Login failed
             echo "<script>window.location.href = '../sessao/adminlog.php';</script>";
             echo "<script>alert('Dados de login incorretos.');</script>";
         }

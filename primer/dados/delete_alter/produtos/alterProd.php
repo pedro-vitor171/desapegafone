@@ -95,6 +95,8 @@ if (isset($id)) {
                 <input type="text" name="geracao" id="geracao" value="<?= $celular['geracao']; ?>" placeholder="geracao"  required>
                 <label for="valor"></label>
                 <input type="number" name="valor" id="valor" value="<?= $celular['valor']; ?>" placeholder="valor" required>
+                <label for="estoque"></label>
+                <input type="number" name="estoque" id="estoque" value="<?= $celular['estoque']; ?>" placeholder="estoque" required>
                 <label for="submit"></label>
                 <input class="btn" type="submit" value="cadastrar" id="sub" name="submit"/>
             </form>

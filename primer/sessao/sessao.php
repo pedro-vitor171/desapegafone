@@ -8,7 +8,6 @@ if ((!isset($_SESSION['email']) == true) and (!isset($_SESSION['senha']) == true
   echo "alert('Por favor, realize o login.')";
 }
 $login = $_SESSION['email'];
-
 require_once '../cruds/conexao.php';
 
 $sql = "SELECT v.*, c.nome AS celular_nome, u.nome AS usuario_nome
@@ -89,6 +88,10 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             color: #ffffff;
             border: .5dvh solid #1870d5;
         }
+        .btns{
+            margin-top: 6.5dvh;
+            margin-bottom: 1.5dvh;
+        }
     </style>
 </head>
 
@@ -109,7 +112,6 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h1>Seja Bem vindo <?php echo $login; ?></h1>
   <table id="customers">
     <tr>
-      <th>ID</th>
       <th>Produto</th>
       <th>Comprador</th>
       <th>Data</th>
@@ -117,7 +119,6 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </tr>
     <?php foreach ($usuarios as $row) { ?>
     <tr>
-      <td><?= $row['id_venda']; ?></td>
       <td><?= $row['celular_nome']; ?></td>
       <td><?= $row['usuario_nome']; ?></td>
       <td><?= $row['data_venda']; ?></td>
@@ -126,7 +127,10 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </tr>
     <?php } ?>
   </table>
-    </main>
+  <div class="btns">
+  <a href="../cruds/exit.php" id="sair">Sair</a>
+  </div>    
+</main>
 
 
 
@@ -140,8 +144,9 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="names">
             <h2>Contatos:</h2>
             <p>Numero de telefone: 77 95590-3454</p>
-            <p>E-mail: pedromario@gmail.com</p>
-            <p><a href="adminlog.php">Administrador</a></p>
+            <p>E-mail: PrimerPhone@gmail.com</p>
+            <p><a href="adminlog.php">Adminlog</a></p>
+            <p><a href="admin.php">Admins</a></p>
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>

@@ -13,11 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && password_verify($senha, $user['senha'])) {
         session_start();
+        $_SESSION['id_user'] = $user['id_usuario']; // Set session ID from user data
         $_SESSION['email'] = $user['email'];
-        echo "<script>alert('Login realizado com sucesso.')</script>";
+        $_SESSION['nome'] = $user['nome'];
+
+        echo "<script>alert('Login realizado com sucesso.') </script>";
         echo "<script>window.location.href = '../sessao/sessao.php'</script>";
     } else {
-        echo "<script>alert('Email ou senha inválidos.')</script>";
+        echo "<script>alert('Email ou senha inválidos.') </script>";
         echo "<script>window.location.href = '../php/loginuser.html'</script>";
     }
 }

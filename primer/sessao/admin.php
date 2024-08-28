@@ -1,8 +1,9 @@
 <?php
 session_start();
-if (isset($_SESSION['email']) && isset($_SESSION['senha'])) {
+if (isset($_SESSION['email']) && isset($_SESSION['senha']) && isset($_SESSION['cnpj'])) {
     unset($_SESSION['email']);
     unset($_SESSION['senha']);
+    unset($_SESSION['cnpj']);
     echo"<script>window.location.href ='adminlog.php'</script>";
     echo "alert('Por favor, realize o login. ')";
 }
@@ -99,7 +100,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['senha'])) {
     </div>
 
     <main>
-        <h1>Seja Bem vindo <?php echo $_SESSION['nome']; ?> </h1>
+        <h1>Seja Bem vindo <?php echo $_SESSION['nome'];?> </h1>
         <div class="btns">
             <a href="../php/cadastropd.php">Cadastrar Produto</a>
             <a href="../php/cadastromarca.html">Cadastrar Marca</a>
@@ -122,8 +123,9 @@ if (isset($_SESSION['email']) && isset($_SESSION['senha'])) {
         <div class="names">
             <h2>Contatos:</h2>
             <p>Numero de telefone: 77 95590-3454</p>
-            <p>E-mail: pedromario@gmail.com</p>
-            <p><a href="adminlog.php">Administrador</a></p>
+            <p>E-mail: PrimerPhone@gmail.com</p>
+            <p><a href="adminlog.php">Adminlog</a></p>
+            <p><a href="admin.php">Admins</a></p>
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>

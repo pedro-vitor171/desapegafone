@@ -27,7 +27,7 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
             justify-content: start;
             padding-bottom: 2dvh;
             width: 100%;
-            height: 100vh;
+            height: auto;
         }
         .con{
             margin-top: 3dvh;
@@ -141,7 +141,9 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="names">
             <h2>Contatos:</h2>
             <p>Numero de telefone: 77 95590-3454</p>
-            <p>E-mail: sentarebolando@gmail.com</p>
+            <p>E-mail: PrimerPhone@gmail.com</p>
+            <p><a href="adminlog.php">Adminlog</a></p>
+            <p><a href="admin.php">Admins</a></p>
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>

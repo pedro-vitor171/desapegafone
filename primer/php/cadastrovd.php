@@ -103,7 +103,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             <div class="names">
                 <h2>Contatos:</h2>
                 <p>Numero de telefone: 77 95590-3454</p>
-                <p>E-mail: sentarebolando@gmail.com</p>
+                <p>E-mail: PrimerPhone@gmail.com</p>
+                <p><a href="../sessao/adminlog.php">Adminlog</a></p>
+                <p><a href="../sessao/admin.php">Admins</a></p>
             </div>
             <div class="names">
                 <h2>Redes Sociais:</h2>
