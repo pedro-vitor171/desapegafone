@@ -3,7 +3,7 @@ require_once '../cruds/conexao.php';
 $sql = "SELECT * FROM marca ORDER BY id_marca DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -58,20 +58,20 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th>Deletar</th>
                 <th>Alterar</th>
             </tr>
-            <?php foreach ($usuarios as $row) { ?>
+            <?php foreach ($marcas as $marca) { ?>
                 <tr>
-                    <td><?php echo $row['id_marca']; ?></td>
-                    <td><?php echo $row['nome']; ?></td>
+                    <td><?php echo $marca['id_marca']; ?></td>
+                    <td><?php echo $marca['nome']; ?></td>
                     <td>
                     <form method="post" action="delete_alter/delete.php">
-                        <input type="hidden" name="id" value="<?= $row['id_marca']; ?>">
+                        <input type="hidden" name="id" value="<?= $marca['id_marca']; ?>">
                         <input type="hidden" name="area" value="marcas">
                         <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
                     </form>
                     </td>
                     <td>
                     <form method="post" action="delete_alter/marca/alterMarca.php">
-                        <input type="hidden" name="id" value="<?= $row['id_marca']; ?>">
+                        <input type="hidden" name="id" value="<?= $marca['id_marca']; ?>">
                         <input type="hidden" name="area" value="marcas">
                         <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
                     </form>

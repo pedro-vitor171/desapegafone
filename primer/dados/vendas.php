@@ -3,7 +3,7 @@ require_once '../cruds/conexao.php';
 $sql = "SELECT * FROM venda ORDER BY id_venda DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$vendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -61,14 +61,14 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th>Deletar</th>
                 <th>Alterar</th>
             </tr>
-            <?php foreach ($usuarios as $row) { ?>
+            <?php foreach ($vendas as $venda) { ?>
     <tr>
-        <td><?= $row['id_venda']; ?></td>
+        <td><?= $venda['id_venda']; ?></td>
         <td>
             <?php
             $sql_celular = "SELECT nome FROM celulares WHERE id_celular = :celular_id";
             $stmt_celular = $pdo->prepare($sql_celular);
-            $stmt_celular->bindParam(':celular_id', $row['celular_id']);
+            $stmt_celular->bindParam(':celular_id', $venda['celular_id']);
 
             if ($stmt_celular->execute()) {
                 $celular = $stmt_celular->fetch(PDO::FETCH_ASSOC);
@@ -82,28 +82,28 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php
             $sql_usuario = "SELECT nome FROM usuarios WHERE id_usuario = :usuario_id";
             $stmt_usuario = $pdo->prepare($sql_usuario);
-            $stmt_usuario->bindParam(':usuario_id', $row['usuario_id']);
+            $stmt_usuario->bindParam(':usuario_id', $venda['usuario_id']);
 
             if ($stmt_usuario->execute()) {
-                $usuario = $stmt_usuario->fetch(PDO::FETCH_ASSOC);
-                echo $usuario['nome'] ?? "Usuário não encontrado";
+                $venda = $stmt_usuario->fetch(PDO::FETCH_ASSOC);
+                echo $venda['nome'] ?? "Usuário não encontrado";
             } else {
                 echo "Erro ao buscar usuário: " . $stmt_usuario->errorInfo()[2];
             }
             ?>
         </td>
-        <td><?= $row['data_venda']; ?></td>
-        <td><?= $row['valor']." R$"; ?></td>
+        <td><?= $venda['data_venda']; ?></td>
+        <td><?= $venda['valor']." R$"; ?></td>
         <td>
             <form method="post" action="delete_alter/deleteVd.php">
-                <input type="hidden" name="id" value="<?= $row['id_venda']; ?>">
+                <input type="hidden" name="id" value="<?= $venda['id_venda']; ?>">
                 <input type="hidden" name="area" value="vendas">
                 <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
             </form>
         </td>
         <td>
             <form method="post" action="delete_alter/venda/alterVd.php">
-                <input type="hidden" name="id" value="<?= $row['id_venda']; ?>">
+                <input type="hidden" name="id" value="<?= $venda['id_venda']; ?>">
                 <input type="hidden" name="area" value="vendas">
                 <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
             </form>

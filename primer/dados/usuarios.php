@@ -60,22 +60,22 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th>Deletar</th>
                 <th>Alterar</th>
             </tr>
-            <?php foreach ($usuarios as $row) { ?>
+            <?php foreach ($usuarios as $usuario) { ?>
                 <tr>
-                    <td><?php echo $row['id_usuario']; ?></td>
-                    <td><?php echo $row['nome']; ?></td>
-                    <td><?php echo $row['telefone']; ?></td>
-                    <td><?php echo $row['email']; ?></td>
+                    <td><?php echo $usuario['id_usuario']; ?></td>
+                    <td><?php echo $usuario['nome']; ?></td>
+                    <td><?php echo $usuario['telefone']; ?></td>
+                    <td><?php echo $usuario['email']; ?></td>
                     <td>
                     <form method="post" action="delete_alter/delete.php">
-                        <input type="hidden" name="id" value="<?= $row['id_usuario']; ?>">
+                        <input type="hidden" name="id" value="<?= $usuario['id_usuario']; ?>">
                         <input type="hidden" name="area" value="usuarios">
                         <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
                     </form>
                     </td>
                     <td>
                     <form method="post" action="delete_alter/usuario/alterUser.php">
-                        <input type="hidden" name="id" value="<?= $row['id_usuario']; ?>">
+                        <input type="hidden" name="id" value="<?= $usuario['id_usuario']; ?>">
                         <input type="hidden" name="area" value="usuarios">
                         <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
                     </form>

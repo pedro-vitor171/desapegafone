@@ -117,12 +117,12 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <th>Data</th>
       <th>Valor</th>
     </tr>
-    <?php foreach ($usuarios as $row) { ?>
+    <?php foreach ($usuarios as $compras) { ?>
     <tr>
-      <td><?= $row['celular_nome']; ?></td>
-      <td><?= $row['usuario_nome']; ?></td>
-      <td><?= $row['data_venda']; ?></td>
-      <td><?= $row['valor']; ?></td>
+      <td><?= $compras['celular_nome']; ?></td>
+      <td><?= $compras['usuario_nome']; ?></td>
+      <td><?= $compras['data_venda']; ?></td>
+      <td><?= $compras['valor']; ?></td>
 
     </tr>
     <?php } ?>
