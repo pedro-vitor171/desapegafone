@@ -1,24 +1,11 @@
 <?php
 session_start();
 if ((!isset($_SESSION['email']) == true) and (!isset($_SESSION['senha']) == true)) {
-  unset($_SESSION['email']);
-  unset($_SESSION['senha']);
-  echo "<script>window.location.href   
- ='../php/loginuser.html'</script>";
-  echo "alert('Por favor, realize o login.')";
+    unset($_SESSION['email']);
+    unset($_SESSION['senha']);
+    header('location: ../php/loginuser.html');
 }
 $login = $_SESSION['email'];
-require_once '../cruds/conexao.php';
-
-$sql = "SELECT v.*, c.nome AS celular_nome, u.nome AS usuario_nome
-        FROM venda v
-        INNER JOIN celulares c ON v.celular_id = c.id_celular
-        INNER JOIN usuarios u ON v.usuario_id = u.id_usuario
-        WHERE u.email = :email"; 
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':email', $login);
-$stmt->execute();
-$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +15,6 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/dados.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <title>PrimerPhone</title>
     <style>
@@ -37,10 +23,10 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0dvh;
+            gap: 2dvh;
             padding-bottom: 2dvh;
             width: 100%;
-            height: 90vh;
+            height: 100vh;
         }
 
         main a {
@@ -58,11 +44,11 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         main h1 {
             background: none;
             font-size: 5dvh;
-            margin-top: -36dvh;
-            margin-bottom: -15dvh;
+            margin-top: 1dvh;
+            margin-bottom: -6dvh;
         }
 
-        main a {
+        main a: {
             background: none;
         }
 
@@ -82,15 +68,19 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             color: #ffffff;
             border: .5dvh solid #c30000;
         }
-        
+
         #dados:hover {
             background: #1870d5;
             color: #ffffff;
             border: .5dvh solid #1870d5;
         }
-        .btns{
-            margin-top: 6.5dvh;
-            margin-bottom: 1.5dvh;
+
+        .btns {
+            display: grid;
+            gap: 4dvh;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            margin-bottom: 7dvh;
         }
     </style>
 </head>
@@ -99,8 +89,8 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
     <div class="subnav">
-        <a href="sessao.php">Conta</a>
-        <a href="user.php">Inicio</a>
+        <a href="sessao/sessao.php">Conta</a>
+        <a href="">Sobre</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
@@ -110,29 +100,17 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <main>
         <h1>Seja Bem vindo <?php echo $login; ?></h1>
-  <table id="customers">
-    <tr>
-      <th>Produto</th>
-      <th>Comprador</th>
-      <th>Data</th>
-      <th>Valor</th>
-    </tr>
-    <?php foreach ($usuarios as $compras) { ?>
-    <tr>
-      <td><?= $compras['celular_nome']; ?></td>
-      <td><?= $compras['usuario_nome']; ?></td>
-      <td><?= $compras['data_venda']; ?></td>
-      <td><?= $compras['valor']; ?></td>
-
-    </tr>
-    <?php } ?>
-  </table>
-  <div class="btns">
-  <a href="../cruds/exit.php" id="sair">Sair</a>
-  </div>    
-</main>
-
-
+        <div class="btns">
+            <a href="../php/cadastropd.html">Cadastrar Produto</a>
+            <a href="../php/cadastromarca.html">Cadastrar Marca</a>
+            <a href="../php/cadastrovd.html">Realizar Venda</a>
+            <a href="../dados/marcas.php" id="dados">Marcas</a>
+            <a href="../dados/produtos.php" id="dados">Produtos</a>
+            <a href="../dados/vendas.php" id="dados">Vendas</a>
+            <a href="../dados/usuarios.php" id="dados">Usuarios</a>
+            <a href="../cruds/exit.php" id="sair">Sair</a>
+        </div>
+    </main>
 
     <footer>
         <div class="names">
@@ -144,15 +122,13 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="names">
             <h2>Contatos:</h2>
             <p>Numero de telefone: 77 95590-3454</p>
-            <p>E-mail: PrimerPhone@gmail.com</p>
-            <p><a href="adminlog.php">Adminlog</a></p>
-            <p><a href="admin.php">Admins</a></p>
+            <p>E-mail: pedroviguibreno@gmail.com</p>
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>
-            <p>- Github</p>
-            <p>- Instagram</p>
-            <p>- Twitter</p>
+            <p>Github:</p>
+            <p>Instagram:</p>
+            <p>Twitter:</p>
         </div>
         </div>
     </footer>

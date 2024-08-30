@@ -1,9 +1,9 @@
 <?php
 require_once '../cruds/conexao.php';
-$sql = "SELECT * FROM celulares ORDER BY id_celular DESC";
+$sql = "SELECT * FROM celulares ORDER BY nome DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -15,26 +15,6 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <link rel="stylesheet" href="../css/dados.css">
     <title>PrimerPhone</title>
-    <style>
-        td .deletar {
-            cursor: pointer;
-            all: inherit;
-            background: #d81f1f;
-            color: #ffffff;
-            font-size: 2.6dvh;
-            padding: .5dvh;
-            border-radius: 5px;
-        }
-        td .alterar {
-            cursor: pointer;
-            all: inherit;
-            background: #1870d5;
-            color: #ffffff;
-            padding: .5dvh;
-            border-radius: 5px;
-            font-size: 2.6dvh;
-        }
-    </style>
 </head>
 
 <body>
@@ -42,7 +22,7 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="subnav">
         <a href="../sessao/sessao.php">Conta</a>
-        <a href="../sessao/user.php">Inicio</a>
+        <a href="">Sobre</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
@@ -53,72 +33,42 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <main>
         <table id="customers">
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>Marca</th>
                 <th>Geração</th>
-                <th>Quantidade</th>
                 <th>Preço</th>
-                <th>Deletar</th>
-                <th>Alterar</th>
             </tr>
-            <?php foreach ($celulares as $celular) { ?>
+            <?php foreach ($usuarios as $row) { ?>
                 <tr>
-                    <td><?php echo $celular['id_celular']; ?></td>
-                    <td><?php echo $celular['nome']; ?></td>
-                    <td>
-                        <?php
-                        $sql_marca = "SELECT nome FROM marca WHERE id_marca = :marca_id";
-                        $stmt_marca = $pdo->prepare($sql_marca);
-                        $stmt_marca->bindParam(':marca_id', $celular['marca_id']);
-                        $stmt_marca->execute();
-                        $marca = $stmt_marca->fetch(PDO::FETCH_ASSOC);
-                         echo $marca['nome'];
-                        ?>
-                    </td>
-                    <td><?php echo $celular['geracao']; ?></td>
-                    <td><?php echo $celular['estoque'] ?></td>
-                    <td><?php echo $celular['valor']." R$"; ?></td>
-                    <td>
-                    <form method="post" action="delete_alter/delete.php">
-                        <input type="hidden" name="id" value="<?= $celular['id_celular']; ?>">
-                        <input type="hidden" name="area" value="produtos">
-                        <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
-                    </form>
-                    </td>
-                    <td>
-                    <form method="post" action="delete_alter/produtos/alterProd.php">
-                        <input type="hidden" name="id" value="<?= $celular['id_celular']; ?>">
-                        <input type="hidden" name="area" value="produtos">
-                        <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
-                    </form>
-                    </td>
+                    <td><?php echo $row['nome']; ?></td>
+                    <td><?php echo $row['marca']; ?></td>
+                    <td><?php echo $row['geração']; ?></td>
+                    <td><?php echo $row['valor']." R$"; ?></td>
                 </tr>
             <?php } ?>
         </table>
     </main>
 
     <footer>
-            <div class="names">
-                <h2>Desenvolvedores:</h2>
-                <p>Breno Lacerda</p>
-                <p>Pedro Vitor</p>
-                <p>Pedro Guimel</p>
-            </div>
-            <div class="names">
-                <h2>Contatos:</h2>
-                <p>Numero de telefone: 77 95590-3454</p>
-                <p>E-mail: PrimerPhone@gmail.com</p>
-                <p><a href="../sessao/adminlog.php">Adminlog</a></p>
-                <p><a href="../sessao/admin.php">Admins</a></p>            </div>
-            <div class="names">
-                <h2>Redes Sociais:</h2>
-                <p>- Github</p>
-                <p>- Instagram</p>
-                <p>- Twitter</p>
-            </div>
-            </div>
-        </footer>
+        <div class="names">
+            <h2>Desenvolvedores:</h2>
+            <p>Breno Lacerda</p>
+            <p>Pedro Vitor</p>
+            <p>Pedro Guimel</p>
+        </div>
+        <div class="names">
+            <h2>Contatos:</h2>
+            <p>Numero de telefone:</p>
+            <p>E-mail:</p>
+        </div>
+        <div class="names">
+            <h2>Redes Sociais:</h2>
+            <p>Github:</p>
+            <p>Instagram:</p>
+            <p>Twitter:</p>
+        </div>
+        </div>
+    </footer>
 </body>
 
 </html>

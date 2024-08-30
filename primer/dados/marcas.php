@@ -1,9 +1,9 @@
 <?php
 require_once '../cruds/conexao.php';
-$sql = "SELECT * FROM marca ORDER BY id_marca DESC";
+$sql = "SELECT * FROM marca ORDER BY nome DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -11,30 +11,10 @@ $marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/index.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <link rel="stylesheet" href="../css/dados.css">
     <title>PrimerPhone</title>
-    <style>
-        td .deletar {
-            cursor: pointer;
-            all: inherit;
-            background: #d81f1f;
-            color: #ffffff;
-            font-size: 2.6dvh;
-            padding: .5dvh;
-            border-radius: 5px;
-        }
-        td .alterar {
-            cursor: pointer;
-            all: inherit;
-            background: #1870d5;
-            color: #ffffff;
-            padding: .5dvh;
-            border-radius: 5px;
-            font-size: 2.6dvh;
-        }
-    </style>
 </head>
 
 <body>
@@ -42,7 +22,7 @@ $marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="subnav">
         <a href="../sessao/sessao.php">Conta</a>
-        <a href="../sessao/user.php">Inicio</a>
+        <a href="">Sobre</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
@@ -53,55 +33,36 @@ $marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <main>
         <table id="customers">
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
-                <th>Deletar</th>
-                <th>Alterar</th>
             </tr>
-            <?php foreach ($marcas as $marca) { ?>
+            <?php foreach ($usuarios as $row) { ?>
                 <tr>
-                    <td><?php echo $marca['id_marca']; ?></td>
-                    <td><?php echo $marca['nome']; ?></td>
-                    <td>
-                    <form method="post" action="delete_alter/delete.php">
-                        <input type="hidden" name="id" value="<?= $marca['id_marca']; ?>">
-                        <input type="hidden" name="area" value="marcas">
-                        <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
-                    </form>
-                    </td>
-                    <td>
-                    <form method="post" action="delete_alter/marca/alterMarca.php">
-                        <input type="hidden" name="id" value="<?= $marca['id_marca']; ?>">
-                        <input type="hidden" name="area" value="marcas">
-                        <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
-                    </form>
-                    </td>
+                    <td><?php echo $row['nome']; ?></td>
                 </tr>
             <?php } ?>
         </table>
     </main>
 
     <footer>
-            <div class="names">
-                <h2>Desenvolvedores:</h2>
-                <p>Breno Lacerda</p>
-                <p>Pedro Vitor</p>
-                <p>Pedro Guimel</p>
-            </div>
-            <div class="names">
-                <h2>Contatos:</h2>
-                <p>Numero de telefone: 77 95590-3454</p>
-                <p>E-mail: PrimerPhone@gmail.com</p>
-                <p><a href="../sessao/adminlog.php">Adminlog</a></p>
-                <p><a href="../sessao/admin.php">Admins</a></p>            </div>
-            <div class="names">
-                <h2>Redes Sociais:</h2>
-                <p>- Github</p>
-                <p>- Instagram</p>
-                <p>- Twitter</p>
-            </div>
-            </div>
-        </footer>
+        <div class="names">
+            <h2>Desenvolvedores:</h2>
+            <p>Breno Lacerda</p>
+            <p>Pedro Vitor</p>
+            <p>Pedro Guimel</p>
+        </div>
+        <div class="names">
+            <h2>Contatos:</h2>
+            <p>Numero de telefone:</p>
+            <p>E-mail:</p>
+        </div>
+        <div class="names">
+            <h2>Redes Sociais:</h2>
+            <p>Github:</p>
+            <p>Instagram:</p>
+            <p>Twitter:</p>
+        </div>
+        </div>
+    </footer>
 </body>
 
 </html>

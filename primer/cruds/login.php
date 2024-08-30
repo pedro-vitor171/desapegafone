@@ -3,24 +3,22 @@ require_once 'conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    $password = $_POST['password'];
 
-    $sql = "SELECT * FROM usuarios WHERE email = :email";
+    $sql = "SELECT * FROM usuários WHERE email = :email AND password = :password";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $password);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($senha, $user['senha'])) {
+    if ($user) {
         session_start();
-        $_SESSION['id_user'] = $user['id_usuario']; // Set session ID from user data
         $_SESSION['email'] = $user['email'];
-        $_SESSION['nome'] = $user['nome'];
-
-        echo "<script>alert('Login realizado com sucesso.') </script>";
+        echo "<script>alert('Login realizado com sucesso.')</script>";
         echo "<script>window.location.href = '../sessao/sessao.php'</script>";
     } else {
-        echo "<script>alert('Email ou senha inválidos.') </script>";
+        echo "<script>alert('Email ou senha inválidos.')</script>";
         echo "<script>window.location.href = '../php/loginuser.html'</script>";
     }
 }

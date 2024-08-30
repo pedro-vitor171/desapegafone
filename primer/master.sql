@@ -1,46 +1,29 @@
 create database primer;
 use primer;
-create table marca (
-    id_marca int primary key auto_increment,
-    nome varchar(50)
+create table marca( nome varchar(50) primary key);
+
+create table celulares (
+    nome varchar(100), 
+    marca varchar(50), 
+    geração int, 
+    valor float(10,2),
+    primary key (nome, marca),
+    foreign key (marca) references marca(nome)
 );
 
-CREATE TABLE celulares (
-    id_celular INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    marca_id INT,
-    geracao INT,
-    valor FLOAT(10,2),
-    estoque INT,
-    FOREIGN KEY (marca_id) REFERENCES marca(id_marca)
-);
-
-create table usuarios (
-    id_usuario int primary key auto_increment,
-    nome varchar(100),
-    telefone bigint,
-    email varchar(100) unique,
-    senha varchar(255)
+create table usuários (
+    nome varchar(100), 
+    telefone int, 
+    email varchar(100), 
+    password varchar(25),
+    primary key(email)
 );
 
 create table venda (
-    id_venda int primary key auto_increment,
-    celular_id int,
-    usuario_id int,
-    data_venda date,
+    produto varchar(100), 
+    comprador varchar(150), 
+    data date, 
     valor float(10,2),
-    foreign key (celular_id) references celulares(id_celular),
-    foreign key (usuario_id) references usuarios(id_usuario)
+    primary key (produto),
+    foreign key (produto) references celulares(nome) -- Corrigido
 );
-
-CREATE TABLE adm (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    cnpj VARCHAR(18) UNIQUE,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL
-);
-
-
-INSERT INTO adm (nome, cnpj, email, senha)
-VALUES ('Administrador Principal', '12345678901234', 'admin@example.com', 'senha_hash');
