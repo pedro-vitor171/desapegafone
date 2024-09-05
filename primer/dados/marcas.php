@@ -1,9 +1,9 @@
 <?php
 require_once '../cruds/conexao.php';
-$sql = "SELECT * FROM marca ORDER BY nome DESC";
+$sql = "SELECT * FROM marca ORDER BY id_marca ASC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -12,9 +12,22 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/index.css">
-    <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <link rel="stylesheet" href="../css/dados.css">
+    <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <title>PrimerPhone</title>
+    <style>
+        main{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .Inform{
+         width: 30%;   
+         margin-top: -5dvh;
+         margin-bottom: -5dvh;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,7 +35,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="subnav">
         <a href="../sessao/sessao.php">Conta</a>
-        <a href="">Sobre</a>
+        <a href="../sessao/user.php">Inicio</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
@@ -31,16 +44,39 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <main>
-        <table id="customers">
-            <tr>
-                <th>Nome</th>
-            </tr>
-            <?php foreach ($usuarios as $row) { ?>
+        <div class="Inform">
+            <h1>Marcas</h1>
+            <table id="customers">
                 <tr>
-                    <td><?php echo $row['nome']; ?></td>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Deletar</th>
+                    <th>Alterar</th>
                 </tr>
-            <?php } ?>
-        </table>
+                <?php foreach ($marcas as $marca) { ?>
+                    <tr>
+                        <td><?php echo $marca['id_marca']; ?></td>
+                        <td><?php echo $marca['nome']; ?></td>
+                        <td>
+                            <form method="post" action="delete_alter/delete.php">
+                                <input type="hidden" name="id" value="<?= $marca['id_marca']; ?>">
+                                <input type="hidden" name="area" value="marcas">
+                                <button type="submit" class="deletar"
+                                    onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="delete_alter/marca/alterMarca.php">
+                                <input type="hidden" name="id" value="<?= $marca['id_marca']; ?>">
+                                <input type="hidden" name="area" value="marcas">
+                                <button type="submit" class="alterar"
+                                    onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </table>
+        </div>
     </main>
 
     <footer>
@@ -52,14 +88,14 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="names">
             <h2>Contatos:</h2>
-            <p>Numero de telefone:</p>
-            <p>E-mail:</p>
+            <p>Numero de telefone: 77 95590-3454</p>
+            <p>E-mail: PrimerPhone@gmail.com</p>
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>
-            <p>Github:</p>
-            <p>Instagram:</p>
-            <p>Twitter:</p>
+            <p>- Github</p>
+            <p>- Instagram</p>
+            <p>- Twitter</p>
         </div>
         </div>
     </footer>

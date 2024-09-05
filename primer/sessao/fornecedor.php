@@ -1,7 +1,12 @@
 <?php
 session_start();
 if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Usuario') {
-    header("Location: adminlog.php");
+    header("Location: sessao.php");
+    echo "<script>alert('Por favor, realize o login.')</script>";
+    exit();
+}
+if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Adm') {
+    header("Location: fornecedor.php");
     echo "<script>alert('Por favor, realize o login.')</script>";
     exit();
 }
@@ -100,12 +105,13 @@ if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Usuario')
     <main>
         <h1>Seja Bem vindo <?php echo $_SESSION['nome'];?> </h1>
         <div class="btns">
-            <a href="../php/cadastrovd.php">Realizar Venda</a>
-            <a href="../dados/vendas.php" id="dados">Vendas</a>
-            <a href="../dados/usuarios.php" id="dados">Usuarios</a>
-            <a href="../cruds/exit.php" id="sair">Sair</a>
+            <a href="../dados/marcas.php" id="dados">Marcas</a>
+            <a href="../dados/produtos.php" id="dados">Produtos</a>
+            <a href="../dados/fornecedores.php" id="dados">Fornecedores</a>
+            <a href="../php/cadastroFn.php" id="dados">Cadastrar fornecedores</a>
             <a href="../php/cadastromarca.html" id="dados">Cadastrar Marca</a>
-
+            <a href="../php/cadastropd.php" id="dados">Cadastrar Produto</a>
+            <a href="../cruds/exit.php" id="sair">Sair</a>
         </div>
     </main>
 

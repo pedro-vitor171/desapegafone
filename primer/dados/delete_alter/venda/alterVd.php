@@ -1,7 +1,6 @@
 <?php
 require_once '../../../cruds/conexao.php';
 
-// Receber o ID da marca via POST
 $id = $_POST['id'];
 
 $sql = "SELECT id_celular, nome, valor FROM celulares";
@@ -13,7 +12,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 if (isset($id)) {
-    // Carregar os dados da marca para pré-preenchimento do formulário
     $sql_venda = "SELECT * FROM venda WHERE id_venda = :id_venda";
     $stmt_venda = $pdo->prepare($sql_venda);
     $stmt_venda->bindParam(':id_venda', $id);
@@ -21,7 +19,6 @@ if (isset($id)) {
     $venda = $stmt_venda->fetch(PDO::FETCH_ASSOC);
 
     if ($venda) {
-        // Exibir formulário de alteração com os dados pré-preenchidos
         ?>
         <!DOCTYPE html>
     <html lang="pt-br">
@@ -134,17 +131,14 @@ if (isset($id)) {
         inputValor.value = celulares[produtoSelecionado]?.valor || 0;
     }
 
-    // Chamar a função ao carregar a página e ao mudar a opção
     window.onload = atualizarValor;
 </script>
         </body>
         </html>
         <?php
     } else {
-        // Exibir mensagem de erro se a marca não for encontrada
         echo "<script>alert('Marca não encontrada.');</script>";
     }
 } else {
-    // Exibir mensagem de erro se o ID não for enviado
     echo "ID da marca não enviado.";
 }

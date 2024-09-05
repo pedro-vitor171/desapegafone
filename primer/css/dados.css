@@ -1,32 +1,73 @@
 #customers {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
+    height: 100%;
     width: 100%;
-  }
-  
-  #customers td, #customers th {
-    border: 1px solid #000000;
-    padding: 8px;
-    font-size: 2.5dvh;
-  }
-  
-  #customers tr:nth-child(even){background-color: #000000;}
-  
-  #customers tr:hover {background-color: #151548;}
-  
-  #customers th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background:none;
-    color: white;
-    font-size: 3.2dvh;
-  }
-
-  main{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-  }
+}
+
+#customers td,
+#customers th {
+    border: 1px solid #f2f2f2;
+    padding: 10px;
+    font-size: 2.5dvh;
+}
+
+#customers th {
+    background-color: #f2f2f2;
+    color: #000000;
+}
+
+td .deletar {
+    all: inherit;
+    cursor: pointer;
+    background: #d81f1f;
+    color: #ffffff;
+    font-size: 2.6dvh;
+    padding: .5dvh;
+    border-radius: 5px;
+    transition: all .3s;
+
+}
+
+td .alterar {
+    all: inherit;
+    background: #1870d5;
+    color: #ffffff;
+    padding: .5dvh;
+    border-radius: 5px;
+    font-size: 2.6dvh;
+    cursor: pointer;
+}
+
+.compras,
+.Inform {
+    gap: 3dvh;
+    width: 50%;
+    padding: 5dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #000000;
+    border-radius: 2dvh;
+}
+
+.Inform {
+    margin-top: 2dvh;
+}
+
+.Inform li {
+    all: inherit;
+    margin: 1dvh 0 1dvh 0;
+    font-size: 3dvh;
+}
+
+.compras h2,
+.Inform h2,
+.Inform h1 {
+    font-size: 6dvh;
+}

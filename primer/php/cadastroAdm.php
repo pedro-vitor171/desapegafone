@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,16 +7,31 @@
     <link rel="stylesheet" href="../css/login_cadastro.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <style>
+       main {
+            padding-top: 10dvh;
+            padding-bottom: 10dvh;
+        }
         form {
             display: grid;
             place-items: center;
             width: 1000px;
-            padding: 10px 0px;
+            padding: 30px 0px;
+            width: 700px;
+        }
+        form a{
+            margin: -2dvh 0 -2dvh 0;
+            color: #F9F6F5;
+            transition: all .3s ease;
+        }
+        form a:hover{
+            color: #1870d5;
+        }
+        h1{
+            text-align: center;
         }
     </style>
-    <title>Cadastro</title>
+    <title>Cadastro de Administrador</title>
 </head>
-
 <body>
 
     <div class="subnav">
@@ -27,17 +41,23 @@
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
         <a href="cadastrouser.html">Cadastro</a>
-        <a href="loginuser.html">Login</a>
+        <a href="loginuser.html">Login</a>            
     </div>
 
-    <main>
-        <div class="for">
-            <form action="../cruds/cadastromarca.php" method="post">
-                <h1>Cadastro Marca</h1>
+    <main>       
+        <div class="for">     
+            <form action="../cruds/cadastroAdm.php" method="POST">
+                <h1>Cadastro<br>Administrador</h1>
                 <label for="nome"></label>
                 <input type="text" name="nome" id="nome" placeholder="Nome" required>
-                <label for="submit"></label>
-                <input class="btn" type="submit" value="cadastrar" id="sub" name="submit" />
+                <label for="cnpj"></label>
+                <input type="text" name="cnpj" id="cnpj" placeholder="CNPJ" required>
+                <label for="email"></label>
+                <input type="email" name="email" id="email" placeholder="Email" required>
+                <label for="senha"></label>
+                <input type="password" name="senha" id="senha" placeholder="Senha" required>
+                <input class="btn" type="submit" value="Cadastrar" id="sub" name="submit"/>
+                <a href="../sessao/adminlog.php">Fazer login</a>
             </form>
         </div>
     </main>
@@ -60,8 +80,6 @@
             <p>- Instagram</p>
             <p>- Twitter</p>
         </div>
-        </div>
     </footer>
 </body>
-
 </html>

@@ -1,11 +1,11 @@
 <?php
-    require_once '../cruds/conexao.php';
-    $sql = "SELECT id_marca, nome FROM marca";
-    $stmt = $pdo->query($sql);
-
-?>
+session_start();
+require_once '../cruds/conexao.php';
+$sql = "SELECT id_marca, nome FROM marca";
+$stmt = $pdo->query($sql); ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,18 +13,20 @@
     <link rel="stylesheet" href="../css/login_cadastro.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <style>
-        main{
+        main {
             padding-top: 20dvh;
             padding-bottom: 20dvh;
         }
-        form{
+
+        form {
             display: grid;
             place-items: center;
             width: 1000px;
             padding: 10px 0px;
             width: 800px;
         }
-        select{
+
+        select {
             all: inherit;
             width: 550px;
             height: 65px;
@@ -36,51 +38,55 @@
             margin-top: -1.5dvh;
             margin-bottom: -2dvh;
         }
+
         option {
-        color: #000000;
-        background-color: #fff;
-        padding: 5px;
-            }
+            color: #000000;
+            background-color: #fff;
+            padding: 5px;
+        }
     </style>
     <title>Cadastro</title>
 </head>
+
 <body>
 
     <div class="subnav">
-                <a href="../sessao/sessao.php">Conta</a>
-                <a href="../sessao/user.php">Inicio</a>
-                <div class="log">
-                    <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
-                </div>
-                <a href="cadastrouser.html">Cadastro</a>
-                <a href="loginuser.html">Login</a>            
+        <a href="../sessao/sessao.php">Conta</a>
+        <a href="../sessao/user.php">Inicio</a>
+        <div class="log">
+            <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
+        <a href="cadastrouser.html">Cadastro</a>
+        <a href="loginuser.html">Login</a>
+    </div>
 
-        <main>       
-            <div class="for">     
+    <main>
+        <div class="for">
             <form action="../cruds/cadastrocell.php" method="post">
                 <h1>Cadastro produto</h1>
+                <label for="id"></label>
+                <input type="hidden" name="id" id="id" value="<?= $_SESSION['id']; ?>" placeholder="id" required>
                 <label for="nome"></label>
                 <input type="text" name="nome" id="nome" placeholder="Nome" required>
                 <label for="marca"></label>
                 <select name="marca" id="marca">
-                    <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<option value='{$row['id_marca']}'>+ {$row['nome']}</option>";
-                }?>
-                </select>                
+                    <?php while ($marca = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo "<option value='{$marca['id_marca']}'>+ {$marca['nome']}</option>";
+                    } ?>
+                </select>
                 <label for="geracao"></label>
-                <input type="text" name="geracao" id="geracao" placeholder="geracao"  required>
+                <input type="text" name="geracao" id="geracao" placeholder="geracao" required>
                 <label for="valor"></label>
                 <input type="number" name="valor" id="valor" placeholder="valor" required>
                 <label for="estoque"></label>
                 <input type="number" name="estoque" id="estoque" placeholder="Estoque" required>
                 <label for="submit"></label>
-                <input class="btn" type="submit" value="cadastrar" id="sub" name="submit"/>
+                <input class="btn" type="submit" value="cadastrar" id="sub" name="submit" />
             </form>
-            </div>
-        </main>
+        </div>
+    </main>
 
-        <footer>
+    <footer>
         <div class="names">
             <h2>Desenvolvedores:</h2>
             <p>Breno Lacerda</p>
@@ -91,8 +97,7 @@
             <h2>Contatos:</h2>
             <p>Numero de telefone: 77 95590-3454</p>
             <p>E-mail: PrimerPhone@gmail.com</p>
-                <p><a href="../sessao/adminlog.php">Adminlog</a></p>
-                <p><a href="../sessao/admin.php">Admins</a></p>        </div>
+        </div>
         <div class="names">
             <h2>Redes Sociais:</h2>
             <p>- Github</p>
@@ -102,4 +107,5 @@
         </div>
     </footer>
 </body>
+
 </html>

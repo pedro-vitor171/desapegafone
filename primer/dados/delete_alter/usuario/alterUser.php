@@ -1,12 +1,10 @@
 <?php
 require_once '../../../cruds/conexao.php';
 
-// Receber o ID da marca via POST
 $id = $_POST['id'];
+$page = $_POST['page'];
 
-// Verificar se o ID foi enviado
 if (isset($id)) {
-    // Carregar os dados da marca para pré-preenchimento do formulário
     $sql_usuario = "SELECT * FROM usuarios WHERE id_usuario = :id_usuario";
     $stmt_usuario = $pdo->prepare($sql_usuario);
     $stmt_usuario->bindParam(':id_usuario', $id);
@@ -14,7 +12,6 @@ if (isset($id)) {
     $usuario = $stmt_usuario->fetch(PDO::FETCH_ASSOC);
 
     if ($usuario) {
-        // Exibir formulário de alteração com os dados pré-preenchidos
         ?>
         <!DOCTYPE html>
     <html lang="pt-br">
@@ -54,6 +51,7 @@ if (isset($id)) {
             <div class="for">     
             <form action="authUser.php" method="post">
                 <h1>Modificar usuario</h1>
+                <input type="hidden" name="page" id="page" value="<?= $page; ?>">
                 <input type="hidden" name="id" value="<?= $usuario['id_usuario']; ?>">
                 <label for="nome"></label>
                 <input type="text" name="nome" id="nome" value="<?= $usuario['nome']; ?>" placeholder="Nome" required>
@@ -64,7 +62,7 @@ if (isset($id)) {
                 <label for="senha"></label>
                 <input type="password" name="senha" id="senha" value="<?= $usuario['senha']; ?>" placeholder="Senha" required>
                 <label for="submit"></label>
-                <input class="btn" type="submit" value="Entrar" id="sub" name="submit"/>
+                <input class="btn" type="submit" value="alterar" id="sub" name="submit"/>
             </form>
             </div>
         </main>
@@ -93,10 +91,8 @@ if (isset($id)) {
         </html>
         <?php
     } else {
-        // Exibir mensagem de erro se a marca não for encontrada
         echo "Marca não encontrada.";
     }
 } else {
-    // Exibir mensagem de erro se o ID não for enviado
     echo "ID da marca não enviado.";
 }

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,7 @@
     <link rel="stylesheet" href="../css/login_cadastro.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <style>
-        form {
+        form{
             display: grid;
             place-items: center;
             width: 1000px;
@@ -18,21 +17,20 @@
     </style>
     <title>Cadastro</title>
 </head>
-
 <body>
 
     <div class="subnav">
-        <a href="../sessao/sessao.php">Conta</a>
-        <a href="">Sobre</a>
-        <div class="log">
-            <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
+                <a href="../sessao/sessao.php">Conta</a>
+                <a href="../sessao/user.php">Inicio</a>
+                <div class="log">
+                    <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
+                </div>
+                <a href="cadastrouser.html">Cadastro</a>
+                <a href="loginuser.html">Login</a>            
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
-    </div>
 
-    <main>
-        <div class="for">
+        <main>       
+            <div class="for">     
             <form action="../cruds/cadastrouser.php" method="post">
                 <h1>Cadastro usuario</h1>
                 <label for="nome"></label>
@@ -40,35 +38,35 @@
                 <label for="telefone"></label>
                 <input type="text" name="telefone" id="telefone" placeholder="Telefone" required>
                 <label for="email"></label>
-                <input type="text" name="email" id="email" placeholder="Email" required>
-                <label for="password"></label>
-                <input type="password" name="password" id="password" placeholder="Senha" required>
+                <input type="email" name="email" id="email" placeholder="Email"  required>
+                <label for="senha"></label>
+                <input type="password" name="senha" id="senha" placeholder="Senha" required>
                 <label for="submit"></label>
-                <input class="btn" type="submit" value="Entrar" id="sub" name="submit" />
+                <input class="btn" type="submit" value="Entrar" id="sub" name="submit"/>
             </form>
-        </div>
-    </main>
+            </div>
+        </main>
 
-    <footer>
-        <div class="names">
-            <h2>Desenvolvedores:</h2>
-            <p>Breno Lacerda</p>
-            <p>Pedro Vitor</p>
-            <p>Pedro Guimel</p>
-        </div>
-        <div class="names">
-            <h2>Contatos:</h2>
-            <p>Numero de telefone:</p>
-            <p>E-mail:</p>
-        </div>
-        <div class="names">
-            <h2>Redes Sociais:</h2>
-            <p>Github:</p>
-            <p>Instagram:</p>
-            <p>Twitter:</p>
-        </div>
-        </div>
-    </footer>
+        <footer>
+            <div class="names">
+                <h2>Desenvolvedores:</h2>
+                <p>Breno Lacerda</p>
+                <p>Pedro Vitor</p>
+                <p>Pedro Guimel</p>
+            </div>
+            <div class="names">
+                <h2>Contatos:</h2>
+                <p>Numero de telefone: 77 95590-3454</p>
+                <p>E-mail: PrimerPhone@gmail.com</p>
+
+            </div>
+            <div class="names">
+                <h2>Redes Sociais:</h2>
+                <p>- Github</p>
+                <p>- Instagram</p>
+                <p>- Twitter</p>
+            </div>
+            </div>
+        </footer>
 </body>
-
 </html>

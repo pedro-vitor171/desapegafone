@@ -24,6 +24,8 @@ body {
     align-items: center;
     background-color: #000000;
     height: 10dvh;
+    position: sticky;
+    top: 0;
 }
 
 a,
@@ -34,8 +36,8 @@ h1 {
 }
 
 main {
-    height: 820px;    
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(111,9,121,1) 37%, rgba(229,0,255,1) 100%);
+    height: 100dvh;
+    background: linear-gradient(90deg, #020024 0%, #6f0979 37%, #e500ff 100%);
     display: flex;
     flex-direction: column;
 }
@@ -67,7 +69,6 @@ footer .names {
     padding-top: 28px;
     flex-direction: column;
     flex-wrap: wrap;
-    width: px;
 }
 
 .subMain .cad {
@@ -93,7 +94,7 @@ footer .names {
 }
 
 .initMain {
-    background:#191970 ;
+    background: #191970;
     background: url("https://www.oficinadanet.com.br/media/post/53307/1400/cpaa-redmi-note-13.png");
     height: 120dvh;
     width: 100%;

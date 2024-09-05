@@ -10,6 +10,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $valor = $_POST['valor'];
         $estoque = $_POST['estoque'];
 
+        if ($valor < 0) {
+            echo "<script>alert('O valor não pode ser negativo.');</script>";
+            header('location: ../../produtos.php');
+            exit();
+        }
+    
+        if ($estoque < 0) {
+            echo "<script>alert('O estoque não pode ser negativo.');</script>";
+            header('location: ../../produtos.php');
+            exit();
+        }
+
         $sql = "UPDATE celulares SET nome = :nome, marca_id = :marca_id, geracao = :geracao, valor = :valor, estoque = :estoque WHERE id_celular = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome);

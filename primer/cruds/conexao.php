@@ -1,8 +1,8 @@
 <?php
- $host = 'localhost';
- $user = 'root';
- $password = '';
- $dbname = 'primer';
+ $host = 'ceteia.guanambi.ifbaiano.edu.br:3306';
+ $user = 'primephone';
+ $password = 'primephone';
+ $dbname = 'primephone';
 
  try{
     $pdo = new PDO("mysql:host=$host;dbname=$dbname",$user,$password);

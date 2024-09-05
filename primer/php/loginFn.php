@@ -12,10 +12,20 @@
             display: grid;
             place-items: center;
             width: 1000px;
-            padding: 10px 0px;
+            padding: 30px 0px;
+            width: 700px;
+        }
+
+        form a {
+            color: #F9F6F5;
+            transition: all .3s ease;
+        }
+
+        form a:hover {
+            color: #1870d5;
         }
     </style>
-    <title>Cadastro</title>
+    <title>Login</title>
 </head>
 
 <body>
@@ -32,12 +42,15 @@
 
     <main>
         <div class="for">
-            <form action="../cruds/cadastromarca.php" method="post">
-                <h1>Cadastro Marca</h1>
-                <label for="nome"></label>
-                <input type="text" name="nome" id="nome" placeholder="Nome" required>
+            <form action="../cruds/Fornlogin.php" method="POST">
+                <h1>Login Fornecedor</h1>
+                <label for="email"></label>
+                <input type="email" name="email" id="email" placeholder="Email" required>
+                <label for="cnpj"></label>
+                <input type="password" name="cnpj" id="cnpj" placeholder="Cnpj" required>
                 <label for="submit"></label>
-                <input class="btn" type="submit" value="cadastrar" id="sub" name="submit" />
+                <input class="btn" type="submit" value="Entrar" id="sub" name="submit" />
+                <a href="cadastroFn.php">Cadastra-se</a>
             </form>
         </div>
     </main>
@@ -59,7 +72,6 @@
             <p>- Github</p>
             <p>- Instagram</p>
             <p>- Twitter</p>
-        </div>
         </div>
     </footer>
 </body>

@@ -4,7 +4,8 @@ session_start();
 
 $sql = "SELECT c.id_celular, c.nome AS nome_celular, m.nome AS nome_marca, c.valor, c.estoque
         FROM celulares c
-        INNER JOIN marca m ON c.marca_id = m.id_marca";
+        INNER JOIN marca m ON c.marca_id = m.id_marca
+        WHERE c.estoque > 0";
 
 $stmt = $pdo->query($sql);
 $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,8 +41,8 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
             all: inherit;
         }
         img{
-            height: 46dvh;
-            width: 36dvh;
+            height: 48dvh;
+            width: 38dvh;
             border-radius: 10px;
             background-size: cover;
         }
@@ -89,6 +90,7 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
+
 <div class="subnav">
         <a href="sessao.php">Conta</a>
         <a href="user.php">Inicio</a>
@@ -142,8 +144,6 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h2>Contatos:</h2>
             <p>Numero de telefone: 77 95590-3454</p>
             <p>E-mail: PrimerPhone@gmail.com</p>
-            <p><a href="adminlog.php">Adminlog</a></p>
-            <p><a href="admin.php">Admins</a></p>
         </div>
         <div class="names">
             <h2>Redes Sociais:</h2>

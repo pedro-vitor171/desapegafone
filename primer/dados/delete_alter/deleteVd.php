@@ -3,9 +3,11 @@ require_once '../../cruds/conexao.php';
 
 $id = $_POST['id'];
 $area = $_POST['area'];
+$page = $_POST['page'];
 
-function excluirVenda($id) {
-    global $pdo; 
+function excluirVenda($id)
+{
+    global $pdo;
     $sql = "DELETE FROM venda WHERE id_venda = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -30,4 +32,9 @@ if ($area === 'vendas') {
         echo '<script>alert("Não foi possível excluir o registro.");</script>';
     }
     header('Location: ../' . $area . '.php');
+}
+if ($page = 'sessao') {
+    header('Location: ../../sessao/' . $page . '.php');
+} elseif ($page = 'usuarios') {
+    header('Location: ../../dados/' . $page . '.php');
 }

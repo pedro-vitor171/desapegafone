@@ -1,12 +1,9 @@
 <?php
 require_once '../../../cruds/conexao.php';
 
-// Receber o ID da marca via POST
 $id = $_POST['id'];
 
-// Verificar se o ID foi enviado
 if (isset($id)) {
-    // Carregar os dados da marca para pré-preenchimento do formulário
     $sql_celular = "SELECT * FROM celulares WHERE id_celular = :id_celular";
     $stmt_celular = $pdo->prepare($sql_celular);
     $stmt_celular->bindParam(':id_celular', $id);
@@ -14,7 +11,6 @@ if (isset($id)) {
     $celular = $stmt_celular->fetch(PDO::FETCH_ASSOC);
 
     if ($celular) {
-        // Exibir formulário de alteração com os dados pré-preenchidos
         ?>
         <!DOCTYPE html>
     <html lang="pt-br">
@@ -126,10 +122,8 @@ if (isset($id)) {
         </html>
         <?php
     } else {
-        // Exibir mensagem de erro se a marca não for encontrada
-        echo "Marca não encontrada.";
+        echo "Produto não encontrada.";
     }
 } else {
-    // Exibir mensagem de erro se o ID não for enviado
     echo "ID da marca não enviado.";
 }
