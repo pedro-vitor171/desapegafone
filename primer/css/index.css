@@ -36,7 +36,7 @@ h1 {
 }
 
 main {
-    height: 100dvh;
+    height: auto;
     background: linear-gradient(90deg, #020024 0%, #6f0979 37%, #e500ff 100%);
     display: flex;
     flex-direction: column;

@@ -1,16 +1,13 @@
 <?php
 session_start();
-if ((!isset($_SESSION['email']) == true) and (!isset($_SESSION['senha']) == true)) {
-    unset($_SESSION['email']);
-    unset($_SESSION['senha']);
-    echo "<script>window.location.href = 'admin.php';</script>";
-    echo "<script>alert('Por favor, realize o login.')</script>";
-}
 if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Adm') {
     header("Location: admin.php");
     exit();
 }
-$login = $_SESSION['email'];
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,8 +53,8 @@ $login = $_SESSION['email'];
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.php">Cadastro</a>
+        <a href="../php/loginuser.php">Login</a>
     </div>
 
     <main>

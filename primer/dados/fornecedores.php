@@ -1,7 +1,10 @@
 <?php
 require_once '../cruds/conexao.php';
-
-// Atualiza a consulta SQL para incluir o nome da marca
+session_start();
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
 $sql = "
     SELECT f.id_fornecedor, f.nome, f.cnpj, f.telefone, f.email, f.endereco, 
            COALESCE(m.nome, 'Freelancer') AS marca_nome
@@ -13,6 +16,15 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $fornecedores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+function formatarCNPJ($cnpj) {
+    $cnpj = preg_replace('/\D/', '', $cnpj);
+    
+    if (strlen($cnpj) == 14) {
+        return preg_replace('/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/', '$1.$2.$3/$4-$5', $cnpj);
+    }
+    
+    return $cnpj; 
+}
 function formatarTelefone($telefone)
 {
     $telefone = preg_replace('/\D/', '', $telefone);
@@ -28,6 +40,7 @@ function formatarTelefone($telefone)
 
 foreach ($fornecedores as &$fornecedor) {
     $fornecedor['telefone'] = formatarTelefone($fornecedor['telefone']);
+    $fornecedor['cnpj'] = formatarCNPJ($fornecedor['cnpj']);
 }
 unset($fornecedor);
 ?>
@@ -51,22 +64,16 @@ unset($fornecedor);
 
         .Inform {
             width: 95%;
-            margin-top: 2vh;
+            margin: 5dvh 0;
+            text-align: center;
+            padding: 3.6dvh;
+            font-size: .6dvh;
         }
 
         table {
-            width: 100%;
+            width: 110%;
             border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px 20px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
+            text-align: center;
         }
 
         .deletar, .alterar {
@@ -82,8 +89,8 @@ unset($fornecedor);
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.php">Cadastro</a>
+        <a href="../php/loginuser.php">Login</a>
     </div>
 
     <main>
@@ -99,7 +106,6 @@ unset($fornecedor);
                     <th>Endereço</th>
                     <th>Marca</th>
                     <th>Deletar</th>
-                    <th>Alterar</th>
                 </tr>
                 <?php foreach ($fornecedores as $fornecedor) { ?>
                     <tr>
@@ -115,13 +121,6 @@ unset($fornecedor);
                                 <input type="hidden" name="id" value="<?php echo $fornecedor['id_fornecedor']; ?>">
                                 <input type="hidden" name="area" value="fornecedores">
                                 <button type="submit" class="deletar" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="delete_alter/fornecedor/alterFornecedor.php">
-                                <input type="hidden" name="id" value="<?php echo $fornecedor['id_fornecedor']; ?>">
-                                <input type="hidden" name="area" value="fornecedores">
-                                <button type="submit" class="alterar" onclick="return confirm('Tem certeza que deseja alterar?');">Alterar</button>
                             </form>
                         </td>
                     </tr>

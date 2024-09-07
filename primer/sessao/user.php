@@ -1,7 +1,6 @@
 <?php
 require_once '../cruds/conexao.php';
 session_start();
-
 $sql = "SELECT c.id_celular, c.nome AS nome_celular, m.nome AS nome_marca, c.valor, c.estoque
         FROM celulares c
         INNER JOIN marca m ON c.marca_id = m.id_marca
@@ -97,8 +96,8 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.php">Cadastro</a>
+        <a href="../php/loginuser.php">Login</a>
     </div>
     <main>
         <di class="con">
@@ -106,6 +105,7 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="line">
     <?php
       foreach ($celulares as $celular) {
+          $valor = $celular['valor'] * 1.50;
           $imagem = "../css/imgs/marcas/{$celular['nome_marca']}.jpg";
           if (file_exists($imagem)) {
               $imagemSrc = $imagem;
@@ -119,10 +119,10 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <h2><?= $celular['nome_celular'] ?></h2>
               <p><?= $celular['nome_marca'] ?></p>
               <p>Produtos disponiveis: <?= $celular['estoque'] ?></p>
-              <p>Preço: R$ <?= number_format($celular['valor'], 2, ',', '.') ?></p>
+              <p>Preço: R$ <?= number_format($valor, 2, ',', '.')?></p>
               <form action="../php/cadastrocp.php" method="POST">
                 <input type="hidden" name="celular_id" value="<?= $celular['id_celular'];?>">
-                <input type="hidden" name="valor" value="<?= $celular['valor']; ?>">
+                <input type="hidden" name="valor" value="<?= $valor; ?>">
                 <button type="submit">Comprar</button>
             </form>
             </li>

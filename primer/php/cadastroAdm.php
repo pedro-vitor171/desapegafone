@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -40,8 +47,8 @@
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="cadastrouser.html">Cadastro</a>
-        <a href="loginuser.html">Login</a>            
+        <a href="cadastrouser.php">Cadastro</a>
+        <a href="loginuser.php">Login</a>            
     </div>
 
     <main>       

@@ -2,8 +2,12 @@
 session_start();
 if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Usuario') {
     header("Location: adminlog.php");
-    echo "<script>alert('Por favor, realize o login.')</script>";
+    $_SESSION['message'] = 'Por favor, realize o login.';
     exit();
+}
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
 }
 ?>
 
@@ -93,19 +97,22 @@ if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Usuario')
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.php">Cadastro</a>
+        <a href="../php/loginuser.php">Login</a>
     </div>
 
     <main>
         <h1>Seja Bem vindo <?php echo $_SESSION['nome'];?> </h1>
         <div class="btns">
-            <a href="../php/cadastrovd.php">Realizar Venda</a>
             <a href="../dados/vendas.php" id="dados">Vendas</a>
             <a href="../dados/usuarios.php" id="dados">Usuarios</a>
+            <a href="../dados/fornecedores.php" id="dados">Fornecedores</a>
+            <a href="../dados/produtos.php" id="dados">Produtos</a>
+            <a href="../dados/administradores.php" id="dados">Administradores</a>
+            <a href="../php/cadastroFn.php" id="dados">Cadastrar fornecedores</a>
+            <a href="../php/cadastroAdm.php" id="dados">Cadastrar administradores</a>
+            <a href="../php/cadastrouser.php" id="dados">Cadastrar Usuario</a>
             <a href="../cruds/exit.php" id="sair">Sair</a>
-            <a href="../php/cadastromarca.html" id="dados">Cadastrar Marca</a>
-
         </div>
     </main>
 

@@ -1,56 +1,76 @@
 <?php
 require_once 'conexao.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    function sanitizeInput($input) {
-        // Remove caracteres de retrocesso e espaços em branco extras
-        $input = preg_replace('/[\x00-\x1F\x7F-\x9F]/u', '', $input); // Remove caracteres de controle
-        return trim($input); // Remove espaços em branco no início e no final
-    }
+session_start();
 
-    $nome = sanitizeInput($_POST['nome']);
-    $geracao = sanitizeInput($_POST['geracao']);
-    $marca_id = sanitizeInput($_POST['marca']);
-    $valor = floatval(sanitizeInput($_POST['valor'])); 
-    $estoque = intval(sanitizeInput($_POST['estoque']));
-    $id = sanitizeInput($_POST['id']);
+function limpezaInput($input) {
+    $input = preg_replace('/[\x00-\x1F\x7F-\x9F]/u', '', $input);
+    return trim($input); 
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nome = limpezaInput($_POST['nome']);
+    $geracao = limpezaInput($_POST['geracao']);
+    $marca_id = limpezaInput($_POST['marca']);
+    $valor = floatval(limpezaInput($_POST['valor'])); 
+    $estoque = intval(limpezaInput($_POST['estoque']));
+    $id = limpezaInput($_POST['id']);
 
     if (empty($nome) || empty($marca_id) || empty($geracao) || empty($valor) || empty($estoque)) {
-        echo "<script>alert('Por favor, preencha todos os campos.');</script>";
-        echo "<script>window.location.href = '../php/cadastropd.php';</script>";
+        $_SESSION['message'] = 'Por favor, preencha todos os campos.';
+        header('Location: ../php/cadastropd.php');
         exit();
     }
 
-    if ($valor < 0) {
-        echo "<script>alert('O valor não pode ser negativo.');</script>";
-        echo "<script>window.location.href = '../php/cadastropd.php';</script>";
+    if ($valor <= 0) {
+        $_SESSION['message'] = 'O valor não pode ser negativo.';
+        header('Location: ../php/cadastropd.php');
         exit();
     }
 
-    if ($estoque < 0) {
-        echo "<script>alert('O estoque não pode ser negativo.');</script>";
-        echo "<script>window.location.href = '../php/cadastropd.php';</script>";
+    if ($estoque <= 0) {
+        $_SESSION['message'] = 'O estoque não pode ser negativo.';
+        header('Location: ../php/cadastropd.php');
         exit();
     }
-
-    $sql = "INSERT INTO celulares (nome, marca_id, geracao, valor, estoque, fornecedor_id) VALUES (:nome, :marca_id, :geracao, :valor, :estoque, :fornecedor_id)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':fornecedor_id', $id, PDO::PARAM_INT);
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':marca_id', $marca_id, PDO::PARAM_INT);
-    $stmt->bindParam(':geracao', $geracao, PDO::PARAM_INT);
-    $stmt->bindParam(':valor', $valor, PDO::PARAM_STR); 
-    $stmt->bindParam(':estoque', $estoque, PDO::PARAM_INT);
 
     try {
+        $sql_verificar = "SELECT COUNT(*) FROM celulares 
+                          WHERE nome = :nome AND marca_id = :marca_id AND geracao = :geracao";
+        $stmt_verificar = $pdo->prepare($sql_verificar);
+        $stmt_verificar->bindParam(':nome', $nome);
+        $stmt_verificar->bindParam(':marca_id', $marca_id, PDO::PARAM_INT);
+        $stmt_verificar->bindParam(':geracao', $geracao, PDO::PARAM_INT);
+        $stmt_verificar->execute();
+        
+        if ($stmt_verificar->fetchColumn() > 0) {
+            $_SESSION['message'] = 'Já existe um produto cadastrado com os mesmos dados.';
+            header('Location: ../php/cadastropd.php');
+            exit();
+        }
+
+        $sql = "INSERT INTO celulares (nome, marca_id, geracao, valor, estoque, fornecedor_id) 
+                VALUES (:nome, :marca_id, :geracao, :valor, :estoque, :fornecedor_id)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':fornecedor_id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':marca_id', $marca_id, PDO::PARAM_INT);
+        $stmt->bindParam(':geracao', $geracao, PDO::PARAM_INT);
+        $stmt->bindParam(':valor', $valor, PDO::PARAM_STR); 
+        $stmt->bindParam(':estoque', $estoque, PDO::PARAM_INT);
         $stmt->execute();
-        echo "<script>alert('Celular cadastrado com sucesso!');</script>";
-        echo "<script>window.location.href = '../dados/produtos.php';</script>";
+
+        $_SESSION['message'] = 'Celular cadastrado com sucesso!';
+        header('Location: ../dados/produtos.php');
+        exit();
+
     } catch (PDOException $e) {
         if ($e->getCode() === '23000') { 
-            echo "<script>alert('Marca inválida.');</script>";
+            $_SESSION['message'] = 'Marca inválida.';
         } else {
-            echo "Erro ao inserir o celular: " . $e->getMessage();
+            $_SESSION['message'] = 'Erro ao inserir o celular: ' . $e->getMessage();
         }
+        header('Location: ../php/cadastropd.php');
+        exit();
     }
 }

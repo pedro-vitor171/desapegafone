@@ -4,9 +4,6 @@ if (isset($_SESSION['message'])) {
     echo "<script>alert('" . $_SESSION['message'] . "');</script>";
     unset($_SESSION['message']);
 }
-require_once '../cruds/conexao.php';
-$sql = "SELECT id_marca, nome FROM marca";
-$stmt = $pdo->query($sql); 
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -18,36 +15,11 @@ $stmt = $pdo->query($sql);
     <link rel="stylesheet" href="../css/login_cadastro.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <style>
-        main {
-            padding-top: 15dvh;
-            padding-bottom: 15dvh;
-        }
-
         form {
             display: grid;
             place-items: center;
             width: 1000px;
             padding: 10px 0px;
-            width: 800px;
-        }
-
-        select {
-            all: inherit;
-            width: 550px;
-            height: 65px;
-            border-radius: 10px;
-            padding: 20px 20px 0px;
-            font-size: 36px;
-            background-color: #F9F6F5;
-            color: #000000;
-            margin-top: -1.5dvh;
-            margin-bottom: -2dvh;
-        }
-
-        option {
-            color: #000000;
-            background-color: #fff;
-            padding: 5px;
         }
     </style>
     <title>Cadastro</title>
@@ -67,24 +39,10 @@ $stmt = $pdo->query($sql);
 
     <main>
         <div class="for">
-            <form action="../cruds/cadastrocell.php" method="post">
-                <h1>Cadastro produto</h1>
-                <label for="id"></label>
-                <input type="hidden" name="id" id="id" value="<?= $_SESSION['id']; ?>" placeholder="id" required>
+            <form action="../cruds/cadastromarca.php" method="post">
+                <h1>Cadastro Marca</h1>
                 <label for="nome"></label>
                 <input type="text" name="nome" id="nome" placeholder="Nome" required>
-                <label for="marca"></label>
-                <select name="marca" id="marca">
-                    <?php while ($marca = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        echo "<option value='{$marca['id_marca']}'>+ {$marca['nome']}</option>";
-                    } ?>
-                </select>
-                <label for="geracao"></label>
-                <input type="text" name="geracao" id="geracao" placeholder="geracao" required>
-                <label for="valor"></label>
-                <input type="number" name="valor" id="valor" placeholder="valor" required>
-                <label for="estoque"></label>
-                <input type="number" name="estoque" id="estoque" placeholder="Estoque" required>
                 <label for="submit"></label>
                 <input class="btn" type="submit" value="cadastrar" id="sub" name="submit" />
             </form>

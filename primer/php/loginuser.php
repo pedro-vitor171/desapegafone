@@ -1,3 +1,26 @@
+<?php
+session_start();
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
+require_once '../cruds/conexao.php';
+if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Adm') {
+    $_SESSION['message'] = 'Você já está logado como admin.';
+    header("Location: ../sessao/admin.php");
+    exit();
+}
+if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Fornecedor') {
+    $_SESSION['message'] = 'Você já está logado como fornecedor.';
+    header("Location: ../sessao/fornecedor.php");
+    exit();
+}
+if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Usuario') {
+    $_SESSION['message'] = "Vc já estar logado como usuario. ";
+    header("Location: ../sessao/sessao.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -11,34 +34,31 @@
             display: grid;
             place-items: center;
             width: 1000px;
-            padding: 10px 0px;
-            width: 800px;
+            padding: 30px 0px;
+            width: 700px;
+            margin: 2dvh 0;
         }
     </style>
-    <title>Cadastro</title>
+    <title>Login</title>
 </head>
 <body>
 
     <div class="subnav">
                 <a href="../sessao/sessao.php">Conta</a>
                 <a href="../sessao/user.php">Inicio</a>
-                <div class="log">
+                    <div class="log">
                     <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
                 </div>
-                <a href="cadastrouser.html">Cadastro</a>
-                <a href="loginuser.html">Login</a>            
+                <a href="cadastrouser.php">Cadastro</a>
+                <a href="loginuser.php">Login</a>            
         </div>
 
         <main>       
             <div class="for">     
-            <form action="../cruds/cadastrouser.php" method="post">
-                <h1>Cadastro usuario</h1>
-                <label for="nome"></label>
-                <input type="text" name="nome" id="nome" placeholder="Nome" required>
-                <label for="telefone"></label>
-                <input type="text" name="telefone" id="telefone" placeholder="Telefone" required>
+            <form action="../cruds/login.php" method="POST">
+                <h1>Login usuario</h1>
                 <label for="email"></label>
-                <input type="email" name="email" id="email" placeholder="Email"  required>
+                <input type="text" name="email" id="email" placeholder="Email"  required>
                 <label for="senha"></label>
                 <input type="password" name="senha" id="senha" placeholder="Senha" required>
                 <label for="submit"></label>
@@ -58,7 +78,6 @@
                 <h2>Contatos:</h2>
                 <p>Numero de telefone: 77 95590-3454</p>
                 <p>E-mail: PrimerPhone@gmail.com</p>
-
             </div>
             <div class="names">
                 <h2>Redes Sociais:</h2>

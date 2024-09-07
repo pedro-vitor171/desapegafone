@@ -1,5 +1,6 @@
 <?php
 require_once '../cruds/conexao.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cnpj = trim($_POST['cnpj']);
@@ -15,22 +16,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $adm = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($adm && $senha === $adm['senha']) {
-            session_start();
-            $_SESSION = array(); 
-            session_destroy(); 
-            
-           
+            session_unset();
+            session_destroy();
+
             session_start();
             $_SESSION['id_user'] = $adm['id'];
             $_SESSION['nome'] = $adm['nome'];
             $_SESSION['usuario_tipo'] = "Adm";
+
+            $_SESSION['message'] = 'Login realizado com sucesso!';
             header("Location: ../sessao/admin.php");
             exit;
         } else {
-            header("Location: ../sessao/adminlog.php?error=login_incorreto");
+            $_SESSION['message'] = 'CNPJ, email ou senha incorretos.';
+            header("Location: ../sessao/adminlog.php");
             exit;
         }
     } catch (PDOException $e) {
-        echo "Erro: " . $e->getMessage();
+        $_SESSION['message'] = 'Erro: ' . $e->getMessage();
+        header("Location: ../sessao/adminlog.php");
+        exit;
     }
 }

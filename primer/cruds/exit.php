@@ -1,4 +1,4 @@
 <?php 
 session_start();
 session_destroy();
-header('location: ../php/loginuser.html');
+header('location: ../php/loginuser.php');

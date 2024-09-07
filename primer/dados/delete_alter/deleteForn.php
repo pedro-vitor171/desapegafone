@@ -1,9 +1,9 @@
 <?php
 require_once '../../cruds/conexao.php';
+session_start();
 
 $id = $_POST['id'];
 $area = $_POST['area'];
-$page = $_POST['page'];
 
 function excluirFornecedor($id)
 {
@@ -20,17 +20,17 @@ function excluirFornecedor($id)
         return $affectedRows > 0;
     } catch (PDOException $e) {
         $pdo->rollBack();
-        error_log("Erro ao deletar registro: " . $e->getMessage() . " - Consulta: " . $sql);
+        error_log("Erro ao deletar Fornecedor: " . $e->getMessage() . " - Consulta: " . $sql);
         return false;
     }
 }
 
 if ($area === 'fornecedores') {
     if (excluirFornecedor($id)) {
-        echo '<script>alert("Registro excluído com sucesso!");</script>';
+        $_SESSION['message'] = 'Fornecedor excluído com sucesso!';
     } else {
-        echo '<script>alert("Não foi possível excluir o registro.");</script>';
+        $_SESSION['message'] = 'Não foi possível excluir o Fornecedor.';
     }
     header('Location: ../' . $area . '.php');
-    exit(); // Adiciona exit após header para garantir que o script não continue
-} 
+    exit();
+}

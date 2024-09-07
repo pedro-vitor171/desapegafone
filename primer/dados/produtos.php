@@ -1,5 +1,10 @@
 <?php
 require_once '../cruds/conexao.php';
+session_start();
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
 $sql = "
     SELECT celulares.*, fornecedor.nome AS fornecedor_nome
     FROM celulares
@@ -30,7 +35,9 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .Inform {
-            width: 60%;
+            width: 90%;
+            text-align: center;
+            margin: 5.5dvh 0;
         }
     </style>
 </head>
@@ -44,8 +51,8 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.php">Cadastro</a>
+        <a href="../php/loginuser.php">Login</a>
     </div>
 
     <main>
@@ -59,11 +66,13 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Marca</th>
                     <th>Geração</th>
                     <th>Estoque</th>
-                    <th>Preço</th>
+                    <th>Preço fornecido</th>
+                    <th>Preço de venda</th>
                     <th>Deletar</th>
                     <th>Alterar</th>
                 </tr>
-                <?php foreach ($celulares as $celular) { ?>
+                <?php foreach ($celulares as $celular) {
+                    $valor = $celular['valor'] * 1.5; ?>
                     <tr>
                         <td><?php echo $celular['id_celular']; ?></td>
                         <td><?php echo $celular['nome']; ?></td>
@@ -85,6 +94,7 @@ $celulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $celular['geracao']; ?></td>
                         <td><?php echo $celular['estoque'] ?></td>
                         <td><?= "R$ " . number_format($celular['valor'], 2, ',', '.'); ?></td>
+                        <td><?= "R$ " . number_format($valor, 2, ',', '.'); ?></td>
                         <td>
                             <form method="post" action="delete_alter/delete.php">
                                 <input type="hidden" name="id" value="<?= $celular['id_celular']; ?>">

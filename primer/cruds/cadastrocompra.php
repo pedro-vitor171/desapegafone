@@ -2,28 +2,26 @@
 session_start();
 require_once '../cruds/conexao.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    function sanitizeInput($input) {
-        $input = preg_replace('/[\x00-\x1F\x7F-\x9F]/u', '', $input); 
-        return trim($input); 
-    }
+function limpezaInput($input) {
+    $input = preg_replace('/[\x00-\x1F\x7F-\x9F]/u', '', $input); 
+    return trim($input); 
+}
 
-    $celular_id = sanitizeInput($_POST['celular_id']);
-    $usuario_id = sanitizeInput($_POST['comprador']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $celular_id = limpezaInput($_POST['celular_id']);
+    $usuario_id = limpezaInput($_POST['comprador']);
     $data = date('Y-m-d');
-    $quantidade = intval(sanitizeInput($_POST['quantidade']));
-    $valor_unitario = floatval(sanitizeInput($_POST['valor_unitario']));
-    $valor_total = floatval(sanitizeInput($_POST['valor_total']));
+    $quantidade = intval(limpezaInput($_POST['quantidade']));
+    $valor_total = floatval(limpezaInput($_POST['valor_total']));
 
     if (empty($celular_id) || empty($usuario_id) || empty($valor_total) || $valor_total <= 0 || empty($quantidade) || $quantidade <= 0) {
-        echo "<script>alert('Todos os campos são obrigatórios e a quantidade e o valor devem ser positivos.');</script>";
-        echo "<script>window.location.href = '../sessao/sessao.php';</script>";
+        $_SESSION['message'] = "Todos os campos são obrigatórios e a quantidade e o valor devem ser positivos.";
+        header("Location: ../sessao/sessao.php");
         exit;
     }
 
     $data_formatada = date('Y-m-d', strtotime($data));
 
-    // Verificar se o usuário existe
     $sql_verificar_usuario = "SELECT id_usuario FROM usuarios WHERE id_usuario = :comprador";
     $stmt_verificar_usuario = $pdo->prepare($sql_verificar_usuario);
     $stmt_verificar_usuario->bindParam(':comprador', $usuario_id);
@@ -31,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario_id = $stmt_verificar_usuario->fetchColumn();
     
     if (!$usuario_id) {
-        echo "<script>alert('Não foi encontrado um usuário com o ID informado.');</script>";
-        echo "<script>window.location.href = '../sessao/sessao.php';</script>";
+        $_SESSION['message'] = "Não foi encontrado um usuário com o ID informado.";
+        header("Location: ../sessao/sessao.php");
         exit;
     }
 
@@ -43,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $estoque_atual = $stmt_verificar_estoque->fetchColumn();
 
     if ($estoque_atual < $quantidade) {
-        echo "<script>alert('Quantidade disponível insuficiente.');</script>";
-        echo "<script>window.location.href = '../sessao/user.php';</script>";
+        $_SESSION['message'] = "Quantidade disponível insuficiente.";
+        header("Location: ../sessao/user.php");
         exit;
     }
 
@@ -64,9 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt_atualizar_estoque->bindParam(':novo_estoque', $novo_estoque);
         $stmt_atualizar_estoque->bindParam(':celular_id', $celular_id);
         $stmt_atualizar_estoque->execute();
-        echo "<script>alert('Compra feita com sucesso!');</script>";
-        echo "<script>window.location.href = '../sessao/sessao.php';</script>";
+        
+        $_SESSION['message'] = "Compra feita com sucesso!";
+        header("Location: ../sessao/sessao.php");
+        exit;
     } catch (PDOException $e) {
-        echo "Erro ao inserir a venda: " . $e->getMessage();
+        $_SESSION['message'] = "Erro ao inserir a venda: " . $e->getMessage();
+        header("Location: ../sessao/sessao.php");
+        exit;
     }
 }

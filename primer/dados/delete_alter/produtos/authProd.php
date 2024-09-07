@@ -1,24 +1,50 @@
 <?php
 require_once '../../../cruds/conexao.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        $id = $_POST['id'];
-        $nome = $_POST['nome'];
-        $marca_id = $_POST['marca_id'];
-        $geracao = $_POST['geracao'];
-        $valor = $_POST['valor'];
-        $estoque = $_POST['estoque'];
+session_start();
 
-        if ($valor < 0) {
-            echo "<script>alert('O valor não pode ser negativo.');</script>";
-            header('location: ../../produtos.php');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    function limpezaInput($input) {
+        $input = preg_replace('/[\x00-\x1F\x7F-\x9F]/u', '', $input); 
+        return trim($input); 
+    }
+
+    try {
+        $id = limpezaInput($_POST['id']);
+        $nome = limpezaInput($_POST['nome']);
+        $marca_id = limpezaInput($_POST['marca_id']);
+        $geracao = limpezaInput($_POST['geracao']);
+        $valor = limpezaInput($_POST['valor']);
+        $estoque = limpezaInput($_POST['estoque']);
+        
+        if (empty($id) || empty($nome) || empty($marca_id) || empty($valor) || empty($estoque)) {
+            $_SESSION['message'] = 'Todos os campos são obrigatórios.';
+            header('Location: ../../produtos.php');
+            exit;
+        }
+
+        if ($valor <= 0) {
+            $_SESSION['message'] = 'O valor não pode ser negativo.';
+            header('Location: ../../produtos.php');
             exit();
         }
-    
-        if ($estoque < 0) {
-            echo "<script>alert('O estoque não pode ser negativo.');</script>";
-            header('location: ../../produtos.php');
+
+        if ($estoque <= 0) {
+            $_SESSION['message'] = 'O estoque não pode ser negativo.';
+            header('Location: ../../produtos.php');
+            exit();
+        }
+
+        $sqlCheck = "SELECT COUNT(*) FROM celulares WHERE valor = :valor AND id_celular != :id";
+        $stmtCheck = $pdo->prepare($sqlCheck);
+        $stmtCheck->bindParam(':valor', $valor);
+        $stmtCheck->bindParam(':id', $id);
+        $stmtCheck->execute();
+        $count = $stmtCheck->fetchColumn();
+
+        if ($count > 0) {
+            $_SESSION['message'] = 'O valor já está sendo usado por outro celular.';
+            header('Location: ../../produtos.php');
             exit();
         }
 
@@ -32,13 +58,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':id', $id);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Celular alterado com sucesso!');</script>";
+            $_SESSION['message'] = 'Celular alterado com sucesso!';
             header('Location: ../../../dados/produtos.php');
+            exit();
         } else {
             $errorInfo = $stmt->errorInfo();
-            echo "Erro ao alterar celular: " . $errorInfo[2];
+            $_SESSION['message'] = 'Erro ao alterar celular: ' . $errorInfo[2];
+            header('Location: ../../../dados/produtos.php');
+            exit();
         }
     } catch (PDOException $e) {
-        echo "Erro ao alterar celular: " . $e->getMessage();
+        $_SESSION['message'] = 'Erro ao alterar celular: ' . $e->getMessage();
+        header('Location: ../../../dados/produtos.php');
+        exit();
     }
+} else {
+    $_SESSION['message'] = 'Método de requisição não suportado.';
+    header('Location: ../../../dados/produtos.php');
+    exit();
 }

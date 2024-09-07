@@ -1,9 +1,10 @@
 <?php
+session_start(); // Certifique-se de iniciar a sessão
 require_once '../../cruds/conexao.php';
 
-$id = $_POST['id'];
-$area = $_POST['area'];
-$page = $_POST['page'];
+$id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+$area = filter_input(INPUT_POST, 'area', FILTER_SANITIZE_STRING);
+$page = filter_input(INPUT_POST, 'page', FILTER_SANITIZE_STRING);
 
 function excluirVenda($id)
 {
@@ -27,14 +28,22 @@ function excluirVenda($id)
 
 if ($area === 'vendas') {
     if (excluirVenda($id)) {
-        echo '<script>alert("Registro excluído com sucesso!");</script>';
+        $_SESSION['message'] = "Compra cancelada com sucesso!";
     } else {
-        echo '<script>alert("Não foi possível excluir o registro.");</script>';
+        $_SESSION['message'] = "Não foi possível excluir a compra.";
     }
     header('Location: ../' . $area . '.php');
+    exit;
 }
-if ($page = 'sessao') {
+
+if ($page == 'sessao') {
     header('Location: ../../sessao/' . $page . '.php');
-} elseif ($page = 'usuarios') {
+    exit;
+} elseif ($page == 'usuarios') {
     header('Location: ../../dados/' . $page . '.php');
+    exit;
+} else {
+    $_SESSION['message'] = "Página não reconhecida.";
+    header('Location: ../../index.php');
+    exit;
 }

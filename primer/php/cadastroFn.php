@@ -2,6 +2,11 @@
 require_once '../cruds/conexao.php';
 $sql = "SELECT id_marca, nome FROM marca";
 $stmt = $pdo->query($sql);
+session_start();
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -14,15 +19,15 @@ $stmt = $pdo->query($sql);
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <style>
         main {
-            padding-top: 20dvh;
-            padding-bottom: 20dvh;
+            padding-top: 25dvh;
+            padding-bottom: 25dvh;
         }
 
         form {
             display: grid;
             place-items: center;
             width: 1000px;
-            padding: 10px 0px;
+            padding: 3dvh 0;
             width: 800px;
         }
 
@@ -56,8 +61,8 @@ $stmt = $pdo->query($sql);
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="cadastrouser.html">Cadastro</a>
-        <a href="loginuser.html">Login</a>
+        <a href="cadastrouser.php">Cadastro</a>
+        <a href="loginuser.php">Login</a>
     </div>
 
     <main>

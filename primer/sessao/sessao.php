@@ -1,23 +1,33 @@
 <?php
+require_once '../cruds/conexao.php';
 session_start();
-if ((!isset($_SESSION['email']) == true) and (!isset($_SESSION['senha']) == true)) {
+
+if (!isset($_SESSION['email']) || !isset($_SESSION['senha'])) {
     unset($_SESSION['email']);
     unset($_SESSION['senha']);
-    echo "<script>window.location.href ='../php/loginuser.html'</script>";
-    echo "alert('Por favor, realize o login.')";
+    $_SESSION['message'] = 'Por favor, realize o login.';
+    header('Location: ../php/loginuser.php');
+    exit(); 
 }
+
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
+
 if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Adm') {
-    header("Location: admin.php");
+    header("Location: adminlog.php");
     echo "<script>alert('Por favor, realize o login.')</script>";
     exit();
 }
+
 if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Fornecedor') {
     header("Location: fornecedor.php");
     echo "<script>alert('Por favor, realize o login.')</script>";
     exit();
 }
+
 $login = $_SESSION['email'];
-require_once '../cruds/conexao.php';
 
 $sql = "SELECT v.*, c.nome AS celular_nome, u.nome AS usuario_nome
         FROM venda v
@@ -28,6 +38,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':email', $login);
 $stmt->execute();
 $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 function formatarTelefone($telefone)
 {
     $telefone = preg_replace('/\D/', '', $telefone);
@@ -144,23 +155,25 @@ foreach ($usuarios as $compra) {
             background: #1870d5;
         }
 
-        h3{
+        h3 {
             font-size: 3dvh;
+        }
+
+        .compras {
+            width: 75%;
         }
     </style>
 </head>
 
 <body>
-
-
     <div class="subnav">
         <a href="sessao.php">Conta</a>
         <a href="user.php">Inicio</a>
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.php">Cadastro</a>
+        <a href="../php/loginuser.php">Login</a>
     </div>
 
     <main>
@@ -178,13 +191,13 @@ foreach ($usuarios as $compra) {
                     <input type="hidden" name="page" value="sessao">
                     <input type="hidden" name="area" value="usuarios">
                     <button type="submit" class="alterar"
-                        onclick="return confirm('Tem certeza que deseja alterar?');">Altualizar dados</button>
+                        onclick="return confirm('Tem certeza que deseja alterar?');">Atualizar dados</button>
                 </form>
             </ul>
         </div>
         <div class="Inform">
             <h2>Funções</h2>
-            <a href="admin.php" class="dados">Administrador</a>
+            <a href="adminlog.php" class="dados">Administrador</a>
             <a href="../php/loginFn.php" class="dados">Fornecedor</a>
         </div>
         <div class="compras">
@@ -199,16 +212,18 @@ foreach ($usuarios as $compra) {
                         <th>Valor</th>
                         <th>Cancelar</th>
                     </tr>
-                    <?php foreach ($usuarios as $compras) {
+                    <?php foreach ($usuarios as $compra) {
 
-                        $data_compra_formatada = (new DateTime($compras["data_venda"]))->format('d/m/Y');
+                        // Ajusta a quantidade para ser pelo menos 1
+                        $quantidade = $compra['quantidade'] > 0 ? $compra['quantidade'] : 1;
+                        $data_compra_formatada = (new DateTime($compra["data_venda"]))->format('d/m/Y');
                         ?>
                         <tr>
-                            <td><?= $compras['celular_nome']; ?></td>
-                            <td><?= $compras['quantidade']; ?></td>
-                            <td><?= $compras['usuario_nome']; ?></td>
+                            <td><?= $compra['celular_nome']; ?></td>
+                            <td><?= $quantidade; ?></td>
+                            <td><?= $compra['usuario_nome']; ?></td>
                             <td><?= $data_compra_formatada; ?></td>
-                            <td><?= "R$ " . number_format($compras['valor'], 2, ',', '.'); ?></td>
+                            <td><?= "R$ " . number_format($compra['valor'], 2, ',', '.'); ?></td>
                             <td>
                                 <form method="post" action="../dados/delete_alter/deleteVd.php">
                                     <input type="hidden" name="id" value="<?= $compra['id_venda']; ?>">
@@ -222,15 +237,12 @@ foreach ($usuarios as $compra) {
                     <?php } ?>
                 </table>
             </div>
-            <h3>Valor total: R$ <?php echo number_format($Valor_total, 2, ',', '.'); ?></h3 style="font-sizer: 60px;">
-        </div>
+            <h3>Valor total: R$ <?php echo number_format($Valor_total, 2, ',', '.'); ?></h3>
         </div>
         <div class="btns">
             <a href="../cruds/exit.php" id="sair">Sair</a>
         </div>
     </main>
-
-
 
     <footer>
         <div class="names">

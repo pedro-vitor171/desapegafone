@@ -43,6 +43,7 @@ CREATE TABLE venda (
     usuario_id INT,
     data_venda DATE,
     valor FLOAT(10,2),
+    quantidade INT,
     FOREIGN KEY (celular_id) REFERENCES celulares(id_celular),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario)
 );

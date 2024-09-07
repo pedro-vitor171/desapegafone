@@ -1,6 +1,9 @@
 <?php
 require_once '../cruds/conexao.php';
-
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
 $sql = "SELECT id_celular, nome, valor FROM celulares";
 $stmt = $pdo->query($sql);
 
@@ -8,7 +11,6 @@ $celulares = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $celulares[$row['id_celular']] = $row;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -63,13 +65,13 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="cadastrouser.html">Cadastro</a>
-        <a href="loginuser.html">Login</a>
+        <a href="cadastrouser.php">Cadastro</a>
+        <a href="loginuser.php">Login</a>
     </div>
 
     <main>
         <div class="for">
-            <form action="../cruds/cadastrovenda.php" method="post">
+            <form action="../cruds/cadastrovenda.php" method="post" onsubmit="return validarValor()">
                 <h1>Realizar venda</h1>
                 <label for="produto"></label>
                 <select name="produto" id="produto" onchange="atualizarValor()">
@@ -90,9 +92,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 <label for="data"></label>
                 <input type="date" name="data" id="data" placeholder="Data" required>
                 <label for="valor"></label>
-                <input type="number" name="valor" id="valor"
-                    value="<?php echo isset($celulares[$produto]) ? $celulares[$produto]['valor'] : 0; ?>"
-                    placeholder="Valor" required>
+                <input type="number" name="valor" id="valor" placeholder="Valor" required>
                 <label for="submit"></label>
                 <input class="btn" type="submit" value="Entrar" id="sub" name="submit" />
             </form>
@@ -108,7 +108,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         </div>
         <div class="names">
             <h2>Contatos:</h2>
-            <p>Numero de telefone: 77 95590-3454</p>
+            <p>Número de telefone: 77 95590-3454</p>
             <p>E-mail: PrimerPhone@gmail.com</p>
         </div>
         <div class="names">
@@ -117,7 +117,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             <p>- Instagram</p>
             <p>- Twitter</p>
         </div>
-        </div>
     </footer>
     <script>
         var celulares = <?php echo json_encode($celulares); ?>;
@@ -125,8 +124,25 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         function atualizarValor() {
             var produtoSelecionado = document.getElementById("produto").value;
             var inputValor = document.getElementById("valor");
-            inputValor.value = celulares[produtoSelecionado]?.valor || 0;
+            var valorProduto = celulares[produtoSelecionado]?.valor || 0;
+            var valorMultiplicado = valorProduto * 1.5;
+
+            inputValor.value = valorMultiplicado;
+            inputValor.min = valorProduto;
         }
+
+        function validarValor() {
+            var produtoSelecionado = document.getElementById("produto").value;
+            var inputValor = document.getElementById("valor");
+            var valorMinimo = celulares[produtoSelecionado]?.valor || 0;
+
+            if (parseFloat(inputValor.value) < valorMinimo) {
+                alert("O valor deve ser maior ou igual ao valor do produto.");
+                return false; 
+            }
+            return true; 
+        }
+
         window.onload = atualizarValor;
     </script>
 </body>

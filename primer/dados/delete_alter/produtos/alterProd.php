@@ -21,18 +21,20 @@ if (isset($id)) {
     <link rel="stylesheet" href="../../../css/login_cadastro.css">
     <link rel="shortcut icon" href="../../../css/imgs/arch.svg" type="image/x-icon">
     <style>
-        main{
-            padding-top: 10dvh;
-            padding-bottom: 10dvh;
+        main {
+            padding-top: 20dvh;
+            padding-bottom: 20dvh;
         }
-        form{
+
+        form {
             display: grid;
             place-items: center;
             width: 1000px;
             padding: 10px 0px;
             width: 800px;
         }
-        select{
+
+        select {
             all: inherit;
             width: 550px;
             height: 65px;
@@ -44,11 +46,12 @@ if (isset($id)) {
             margin-top: -1.5dvh;
             margin-bottom: -2dvh;
         }
+
         option {
-        color: #000000;
-        background-color: #fff;
-        padding: 5px;
-            }
+            color: #000000;
+            background-color: #fff;
+            padding: 5px;
+        }
     </style>
     <title>Cadastro</title>
     </head>

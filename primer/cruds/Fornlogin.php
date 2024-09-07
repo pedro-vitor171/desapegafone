@@ -4,12 +4,12 @@ require_once 'conexao.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email']);
-    $cnpj = trim($_POST['cnpj']);
+    $email = $_POST['email'];
+    $cnpj = $_POST['cnpj'];
 
     if (!$email || !$cnpj) {
-        echo "<script>alert('Todos os campos são obrigatórios.');</script>";
-        echo "<script>window.location.href = '../sessao/loginuser.html';</script>";
+        $_SESSION['message'] = 'Todos os campos são obrigatórios.';
+        header("Location: ../sessao/loginuser.php");
         exit();
     }
 
@@ -22,8 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fornecedor = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($fornecedor && $cnpj === $fornecedor['cnpj']) {
-            session_start();
-            $_SESSION = array();
+            session_unset();
             session_destroy();
 
             session_start();
@@ -32,17 +31,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['email'] = $fornecedor['email'];
             $_SESSION['cnpj'] = $fornecedor['cnpj'];
             $_SESSION['usuario_tipo'] = 'Fornecedor';
+
+            $_SESSION['message'] = 'Login realizado com sucesso!';
             header("Location: ../sessao/fornecedor.php");
             exit();
         } else {
-            echo "<script>alert('Email ou senha incorretos.');</script>";
-            echo "<script>window.location.href = '../php/loginFn.php';</script>";
+            $_SESSION['message'] = 'Email ou CNPJ incorretos.';
+            header("Location: ../php/loginFn.php");
             exit();
         }
 
     } catch (PDOException $e) {
-        echo "<script>alert('Erro ao realizar login: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "');</script>";
-        echo "<script>window.location.href = '../sessao/loginuser.html';</script>";
+        $_SESSION['message'] = 'Erro ao realizar login: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+        header("Location: ../sessao/loginuser.php");
         exit();
     }
 }

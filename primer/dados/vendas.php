@@ -1,11 +1,19 @@
 <?php
 require_once '../cruds/conexao.php';
-
-// Consulta para obter todas as vendas, ordenadas pelo ID da venda em ordem decrescente.
+session_start();
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
 $sql = "SELECT * FROM venda ORDER BY id_venda DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $vendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Usuario') {
+    header("Location: ../sessao/sessao.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -26,9 +34,9 @@ $vendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .Inform {
-            width: 68%;
-            margin-top: -5dvh;
-            margin-bottom: -5dvh;
+            width: 85%;
+            margin-top: 5dvh;
+            margin-bottom: 5dvh;
         }
     </style>
 </head>
@@ -40,8 +48,8 @@ $vendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.php">Cadastro</a>
+        <a href="../php/loginuser.php">Login</a>
     </div>
 
     <main>
@@ -53,6 +61,7 @@ $vendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Produto</th>
                     <th>Comprador</th>
                     <th>Data</th>
+                    <th>Quantidade</th>
                     <th>Valor</th>
                     <th>Deletar</th>
                     <th>Alterar</th>
@@ -92,6 +101,7 @@ $vendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             ?>
                         </td>
                         <td><?= $data_venda_formatada; ?></td>
+                        <td><?= $venda['quantidade']; ?></td>
                         <td><?= isset($venda['valor']) ? "R$ ". number_format($venda['valor'], '2', ',', '.'): 'Valor não informado'; ?></td>
                         <td>
                             <form method="post" action="delete_alter/deleteVd.php">

@@ -1,3 +1,16 @@
+<?php
+session_start();
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
+if (isset($_SESSION['usuario_tipo']) && $_SESSION['usuario_tipo'] === 'Fornecedor') {
+    $_SESSION['message'] = 'Fornecedor cadastrado com sucesso.';
+    header("Location: ../dados/fornecedores.php");
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -8,6 +21,9 @@
     <link rel="stylesheet" href="../css/login_cadastro.css">
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <style>
+        main{
+            padding: 5dvh 0;
+        }
         form {
             display: grid;
             place-items: center;
@@ -36,8 +52,8 @@
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="cadastrouser.html">Cadastro</a>
-        <a href="loginuser.html">Login</a>
+        <a href="cadastrouser.php">Cadastro</a>
+        <a href="loginuser.php">Login</a>
     </div>
 
     <main>
@@ -50,7 +66,7 @@
                 <input type="password" name="cnpj" id="cnpj" placeholder="Cnpj" required>
                 <label for="submit"></label>
                 <input class="btn" type="submit" value="Entrar" id="sub" name="submit" />
-                <a href="cadastroFn.php">Cadastra-se</a>
+                <a href="cadastroFn.php">Login</a>
             </form>
         </div>
     </main>

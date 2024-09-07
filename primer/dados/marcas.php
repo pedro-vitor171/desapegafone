@@ -1,9 +1,32 @@
 <?php
 require_once '../cruds/conexao.php';
+session_start();
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
 $sql = "SELECT * FROM marca ORDER BY id_marca ASC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$sql = "
+    SELECT 
+        m.id_marca, 
+        m.nome, 
+        COUNT(DISTINCT f.id_fornecedor) AS num_fornecedores, 
+        COUNT(c.id_celular) AS num_celulares
+    FROM marca m
+    LEFT JOIN fornecedor f ON m.id_marca = f.marca_id
+    LEFT JOIN celulares c ON m.id_marca = c.marca_id
+    GROUP BY m.id_marca
+    ORDER BY m.id_marca ASC
+";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -16,16 +39,29 @@ $marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="shortcut icon" href="../css/imgs/arch.svg" type="image/x-icon">
     <title>PrimerPhone</title>
     <style>
-        main{
+        main {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
-        .Inform{
-         width: 30%;   
-         margin-top: -5dvh;
-         margin-bottom: -5dvh;
+
+        .Inform {
+            width: 65%;
+            margin: 5dvh 0;
+            text-align: center;
+            padding: 3.6dvh;
+            font-size: .6dvh;
+        }
+
+        table {
+            width: 110%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .deletar, .alterar {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -39,8 +75,8 @@ $marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="log">
             <h1><b><a href="../index.html">PrimerPhone</a></b></h1>
         </div>
-        <a href="../php/cadastrouser.html">Cadastro</a>
-        <a href="../php/loginuser.html">Login</a>
+        <a href="../php/cadastrouser.php">Cadastro</a>
+        <a href="../php/loginuser.php">Login</a>
     </div>
 
     <main>
@@ -50,6 +86,8 @@ $marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>N° Fornecedores</th>
+                    <th>N° Produtos</th>
                     <th>Deletar</th>
                     <th>Alterar</th>
                 </tr>
@@ -57,6 +95,8 @@ $marcas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tr>
                         <td><?php echo $marca['id_marca']; ?></td>
                         <td><?php echo $marca['nome']; ?></td>
+                        <td><?php echo $marca['num_fornecedores']; ?></td>
+                        <td><?php echo $marca['num_celulares']; ?></td>
                         <td>
                             <form method="post" action="delete_alter/delete.php">
                                 <input type="hidden" name="id" value="<?= $marca['id_marca']; ?>">
